@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Adam Smith's Portfolio Website</title>
+
+	<link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+
+	<style type="text/css">
+		body {
+			font-family: "Tahoma", Geneva, sans-serif; 
+		}
+
+		.cover {
+			position: fixed;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+			/*background-color: rgba(0, 96, 255, 0.5);*/
+			background-color: rgba(0, 10, 32, 0.5);
+		}
+		.cover-background {
+			background-image: url('/img/xcom2.jpg');
+			position: fixed;
+			left: 0px;
+			top: 0px;
+			width: 100%;
+			height: 100%;
+		}
+
+		.my-nav {
+			padding-top: 2%;
+			z-index: 1;
+			color: #fff;
+		}
+		.my-nav a {
+			color: #fff;			
+		}
+		.my-nav a:hover {
+			background-color: rgba(0,0,0,0.8);
+			color: #aaa;
+		}
+		
+		.front-page {
+			margin-top: 15%;
+			z-index: 1;
+			background-color: rgba(255,255,255,0);
+			color: #fff;
+			text-shadow: 0px 2px 5px rgba(0,0,0,0.5);
+		}
+
+		span {
+			color: #fff;
+		}
+	</style>
+
+	<script src="jquery/dist/jquery.min.js"></script>
+	<script src='bootstrap/dist/js/bootstrap.min.js'></script>
+	<script src="angular/angular.min.js"></script>
+</head>
+
+<body>
+	<div class="cover-background"></div>
+	<div class="cover"></div>
+	<div class="navbar navbar-transparent my-nav"> <!-- navbar-fixed-top -->
+		<div class="container-fluid">
+			<div class="collapse navbar-collapse"> <!-- navbar-header -->
+				<ul class="nav navbar-nav">
+					<li><a href="#">Home</a></li>
+					<li><a href="#">Projects</a></li>	<!-- Dropdown -->
+					<li><a href="#">About Me</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><span class="fa fa-bitbucket fa-2x"></span></a>
+					<li><a href="#"><span class="fa fa-github fa-2x"></span></a>
+					<li><a href="#"><span class="fa fa-linkedin fa-2x"></span></a>
+					<li><a href="#"><span class="fa fa-envelope fa-2x"></span></a>	<!-- dialog box with email as image -->
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12 text-center front-page">
+				<h1>Coder | Gamer | Traveller</h1>
+				<h3>
+					Hello, My name is Adam Smith, and I am a generalist programmer</br>
+					with a passion for making video games and travelling the world.
+				</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12 text-center" style="padding-top: 23%;">
+				<span class="fa fa-arrow-down fa-2x" style="color: #fff;"></span>
+			</div>
+		</div>
+
+		<!-- PROJECTS SECTION -->
+		<div class="row" style="padding-top: 50px; background-color: white; z-index:1;"></div>
+		<div class="row" style="z-index:1;">
+
+			<div class="col-md-12 text-center">
+				<h1 style="color:#fff;">Projects</h1>
+			</div>
+
+			<!--
+				Projects:
+					XCom2 PC - https://www.youtube.com/watch?v=ryOfZv0JjIg
+					XCom2 XB1/PS4 - https://www.youtube.com/watch?v=4Zq_audaBSw
+					Oculus Rift/Gear VR 360 degree video player
+					TheBlu
+					Bloom
+					Streets of India
+					Software Rasterizer
+			-->
+
+			<div class="col-md-6">
+				<span>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar mollis purus ut rutrum. Nunc eleifend sagittis nisl, at imperdiet nulla dapibus at. Suspendisse pellentesque orci ut faucibus facilisis. Duis lacinia bibendum lacus rutrum ullamcorper. Nullam porttitor, mauris placerat fermentum tincidunt, elit libero dictum mauris, in convallis mauris ante quis augue. Quisque velit metus, hendrerit non venenatis at, tempus ac nunc. Donec ligula est, semper et faucibus ut, consectetur eget sapien. Donec nisi metus, consequat eu purus nec, rutrum efficitur erat. In venenatis eros a lacus gravida, et malesuada nulla semper. Fusce quis massa quam. Ut auctor pulvinar lacus at vestibulum. Sed quis elit accumsan, pretium erat eu, iaculis ex. Quisque id finibus ipsum, ut ornare enim. Aenean egestas sollicitudin pulvinar. Nam tempus quam eros, eget imperdiet nulla suscipit ultricies. Suspendisse a magna sit amet quam egestas cursus ut pharetra arcu.
+				</span>
+			</div>
+			<div class="col-md-6">
+				<span>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar mollis purus ut rutrum. Nunc eleifend sagittis nisl, at imperdiet nulla dapibus at. Suspendisse pellentesque orci ut faucibus facilisis. Duis lacinia bibendum lacus rutrum ullamcorper. Nullam porttitor, mauris placerat fermentum tincidunt, elit libero dictum mauris, in convallis mauris ante quis augue. Quisque velit metus, hendrerit non venenatis at, tempus ac nunc. Donec ligula est, semper et faucibus ut, consectetur eget sapien. Donec nisi metus, consequat eu purus nec, rutrum efficitur erat. In venenatis eros a lacus gravida, et malesuada nulla semper. Fusce quis massa quam. Ut auctor pulvinar lacus at vestibulum. Sed quis elit accumsan, pretium erat eu, iaculis ex. Quisque id finibus ipsum, ut ornare enim. Aenean egestas sollicitudin pulvinar. Nam tempus quam eros, eget imperdiet nulla suscipit ultricies. Suspendisse a magna sit amet quam egestas cursus ut pharetra arcu.
+				</span>
+			</div>
+		</div>
+
+		<!-- ABOUT ME SECTION -->
+		<div class="row" style="padding-top: 50px; background-color:blue; z-index:1;">
+
+			<div class="col-md-12 text-center">
+				<h1 style="color:#fff;">About Me</h1>
+				<span>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar mollis purus ut rutrum. Nunc eleifend sagittis nisl, at imperdiet nulla dapibus at. Suspendisse pellentesque orci ut faucibus facilisis. Duis lacinia bibendum lacus rutrum ullamcorper. Nullam porttitor, mauris placerat fermentum tincidunt, elit libero dictum mauris, in convallis mauris ante quis augue. Quisque velit metus, hendrerit non venenatis at, tempus ac nunc. Donec ligula est, semper et faucibus ut, consectetur eget sapien. Donec nisi metus, consequat eu purus nec, rutrum efficitur erat. In venenatis eros a lacus gravida, et malesuada nulla semper. Fusce quis massa quam. Ut auctor pulvinar lacus at vestibulum. Sed quis elit accumsan, pretium erat eu, iaculis ex. Quisque id finibus ipsum, ut ornare enim. Aenean egestas sollicitudin pulvinar. Nam tempus quam eros, eget imperdiet nulla suscipit ultricies. Suspendisse a magna sit amet quam egestas cursus ut pharetra arcu.
+				</span>
+			</div>
+		</div>
+
+		<!-- FOOTER -->
+		<div class="row"  style="padding-top: 10px; padding-bottom: 5px;">
+			<div class="col-md-12">
+				<p>Footer info goes here...</p>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

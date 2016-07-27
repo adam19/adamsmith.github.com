@@ -6,27 +6,27 @@
 		<p>
 			I was tasked with developing a new 360 degree video player for the 
 			Samsung Gear VR. Our video team would stitch together 4K movies that
-			I would then take a map to a sphere in OpenGL. The viewer would be positioned
-			in the center of the sphere, so they could view the movie in any direction. 
+			I would then procedurally map to a sphere in OpenGL. The viewer would be positioned
+			in the center of the sphere, so they could view the movie all around them. 
 			The system supported swapping between multiple spherical mapping methods including 
 			Longitude/Latitude and Top-down Radial Projection.
 		</p>
 		<p>
 			The movies were mapped to the sphere procedurally to keep file sizes low. 
-			The Longitude/Latitude mapping was fairly simple to implement as it used as set
+			The Longitude/Latitude mapping was fairly simple to implement as it used a set
 			angle for the pitch between rows of quads on the final mesh. This did lead to
 			some artifacts on the top and bottom of the sphere, but this was remedied by 
-			applying a simple color blend at the top and bottom most vertices. The Top-down 
+			applying a simple color blend at the top-most and bottom-most vertices. The Top-down 
 			Radial Projection was generated procedurally also. Instead of creating the rows of 
 			quads based on a set pitch angle, they were spaced evenly based on the top-down
-			projection of the radius. Normally this could lead to distortions on the bottom edges, 
-			but the video feeds I was provided with were 4K and circular in nature, so the 
-			artifacts were non-existant. 
+			projection of the radius. Normally this could lead to distortions on the bottom edges 
+			due to the different sized quads, but the video feeds I was provided were 4K and 
+			circular in nature, so the artifacts were non-existant. 
 		</p>
 		<p>
 			Another feature that was included in the player was binaural audio playback. The 
-			video team recorded audio in a manner that was slightly different than normal stereo
-			recording. Instead an array of microphones recorded directional audio. In the player 
+			video team recorded audio in a manner that was slightly different than a normal stereo
+			recording. Instead, an array of microphones recorded directional audio. In the player 
 			I had to manage up to 8 audio streams and mix between them based on the viewing direction. 
 			This led to a lot of different prototypes and experiments to find a good feel for the 
 			audio playback. Some of them involved different mixes of 'stereo' mixes, and some others 

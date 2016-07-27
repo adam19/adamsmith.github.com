@@ -11,10 +11,10 @@
 			found a paper describing the Marching-Cubes algorithm.
 		</p>
 		<p>
-			We started by generating three-dimensional Perlin noise. After that we 
-			were left a point-cloud of varying values. We filtered the values by an 
-			arbitrary value of 0.5, and discarded the rest. The remaining points were 
-			run through our Marching-Cubes algorithm. We checked each cell in the cloud 
+			We started by generating three-dimensional Perlin noise. This provided us 
+			with a 3D point-cloud of varying values. We filtered the values by an 
+			arbitrary value of 0.5, and discarded the lower values. The remaining points 
+			were run through our Marching-Cubes algorithm. We checked each cell in the cloud 
 			to see if it had neighboring cells that were occupied. If a cell had neighbors 
 			on all sides we would skip it. If it had some empty spots surrounding it 
 			we would mark it as a surface. We did a final pass over the data and generated 

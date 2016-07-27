@@ -1,64 +1,22 @@
 <!doctype html>
-<html>
+<html data-ng-app="portfolio">
 
 <head>
 	<title>Adam Smith's Portfolio Website</title>
 
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="style.css">
 
-	<style type="text/css">
-		body {
-			font-family: "Tahoma", Geneva, sans-serif; 
-		}
-
-		.cover {
-			position: fixed;
-			left: 0px;
-			top: 0px;
-			width: 100%;
-			height: 100%;
-			/*background-color: rgba(0, 96, 255, 0.5);*/
-			background-color: rgba(0, 10, 32, 0.5);
-		}
-		.cover-background {
-			background-image: url('/img/xcom2.jpg');
-			position: fixed;
-			left: 0px;
-			top: 0px;
-			width: 100%;
-			height: 100%;
-		}
-
-		.my-nav {
-			padding-top: 2%;
-			z-index: 1;
-			color: #fff;
-		}
-		.my-nav a {
-			color: #fff;			
-		}
-		.my-nav a:hover {
-			background-color: rgba(0,0,0,0.8);
-			color: #aaa;
-		}
-		
-		.front-page {
-			margin-top: 15%;
-			z-index: 1;
-			background-color: rgba(255,255,255,0);
-			color: #fff;
-			text-shadow: 0px 2px 5px rgba(0,0,0,0.5);
-		}
-
-		span {
-			color: #fff;
-		}
-	</style>
-
-	<script src="node_modules/jquery/dist/jquery.min.js"></script>
-	<script src='node_modules/bootstrap/dist/js/bootstrap.min.js'></script>
-	<script src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script type='text/javascript' src="node_modules/angular-video/js/anguvideo.js"></script>
+	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script type="text/javascript" src='node_modules/bootstrap/dist/js/bootstrap.min.js'></script>
+	<script type="text/javascript" src='app.js'></script>
 </head>
 
 <body>
@@ -69,14 +27,30 @@
 			<div class="collapse navbar-collapse"> <!-- navbar-header -->
 				<ul class="nav navbar-nav">
 					<li><a href="#">Home</a></li>
-					<li><a href="#">Projects</a></li>	<!-- Dropdown -->
-					<li><a href="#">About Me</a></li>
+					<!--<li><a href="#Projects">Projects</a></li>-->
+					<!--<li><a href="#AboutMe">About Me</a></li>-->
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><span class="fa fa-bitbucket fa-2x"></span></a>
-					<li><a href="#"><span class="fa fa-github fa-2x"></span></a>
-					<li><a href="#"><span class="fa fa-linkedin fa-2x"></span></a>
-					<li><a href="#"><span class="fa fa-envelope fa-2x"></span></a>	<!-- dialog box with email as image -->
+					<li>
+						<a href="https://bitbucket.org/adam19/">
+						<span class="fa fa-bitbucket fa-2x"></span>
+						</a>
+					</li>
+					<li>
+						<a href="https://github.com/adam19">
+						<span class="fa fa-github fa-2x"></span>
+						</a>
+					</li>
+					<li>
+						<a href="https://www.linkedin.com/in/adam19">
+						<span class="fa fa-linkedin fa-2x"></span>
+						</a>
+					</li>
+					<!--<li>
+						<a href="#">
+						<span class="fa fa-envelope fa-2x"></span>
+						</a>
+					</li>-->
 				</ul>
 			</div>
 		</div>
@@ -100,52 +74,88 @@
 		</div>
 
 		<!-- PROJECTS SECTION -->
+		<a name="Projects"></a>
 		<div class="row" style="padding-top: 50px; background-color: white; z-index:1;"></div>
 		<div class="row" style="z-index:1;">
 
 			<div class="col-md-12 text-center">
-				<h1 style="color:#fff;">Projects</h1>
+				<h1 style="color:#fff; padding-bottom:20px;">Projects</h1>
+			</div>
+			
+			<div class="col-md-12 text-center" style="background-color: rgba(0,0,0,0.6); color:#ccc; margin-bottom:30px;">
+				<div class="text-right">
+					<!--<span class="fa fa-close fa-2x" style="color:#666;"></span>-->
+				</div> 
+				<div ui-view>
+					<!-- This is the working area... -->
+				</div>
 			</div>
 
-			<!--
-				Projects:
-					XCom2 PC - https://www.youtube.com/watch?v=ryOfZv0JjIg
-					XCom2 XB1/PS4 - https://www.youtube.com/watch?v=4Zq_audaBSw
-					Oculus Rift/Gear VR 360 degree video player
-					TheBlu
-					Bloom
-					Streets of India
-					Software Rasterizer
-			-->
-
-			<div class="col-md-6">
-				<span>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar mollis purus ut rutrum. Nunc eleifend sagittis nisl, at imperdiet nulla dapibus at. Suspendisse pellentesque orci ut faucibus facilisis. Duis lacinia bibendum lacus rutrum ullamcorper. Nullam porttitor, mauris placerat fermentum tincidunt, elit libero dictum mauris, in convallis mauris ante quis augue. Quisque velit metus, hendrerit non venenatis at, tempus ac nunc. Donec ligula est, semper et faucibus ut, consectetur eget sapien. Donec nisi metus, consequat eu purus nec, rutrum efficitur erat. In venenatis eros a lacus gravida, et malesuada nulla semper. Fusce quis massa quam. Ut auctor pulvinar lacus at vestibulum. Sed quis elit accumsan, pretium erat eu, iaculis ex. Quisque id finibus ipsum, ut ornare enim. Aenean egestas sollicitudin pulvinar. Nam tempus quam eros, eget imperdiet nulla suscipit ultricies. Suspendisse a magna sit amet quam egestas cursus ut pharetra arcu.
-				</span>
-			</div>
-			<div class="col-md-6">
-				<span>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar mollis purus ut rutrum. Nunc eleifend sagittis nisl, at imperdiet nulla dapibus at. Suspendisse pellentesque orci ut faucibus facilisis. Duis lacinia bibendum lacus rutrum ullamcorper. Nullam porttitor, mauris placerat fermentum tincidunt, elit libero dictum mauris, in convallis mauris ante quis augue. Quisque velit metus, hendrerit non venenatis at, tempus ac nunc. Donec ligula est, semper et faucibus ut, consectetur eget sapien. Donec nisi metus, consequat eu purus nec, rutrum efficitur erat. In venenatis eros a lacus gravida, et malesuada nulla semper. Fusce quis massa quam. Ut auctor pulvinar lacus at vestibulum. Sed quis elit accumsan, pretium erat eu, iaculis ex. Quisque id finibus ipsum, ut ornare enim. Aenean egestas sollicitudin pulvinar. Nam tempus quam eros, eget imperdiet nulla suscipit ultricies. Suspendisse a magna sit amet quam egestas cursus ut pharetra arcu.
-				</span>
-			</div>
+			<project-item 
+				bgimage="img/xcom2-console.jpg" 
+				projname="XCom 2 (PC/XB1/PS4)"
+				state="/xcom2">
+			</project-item>
+			<project-item 
+				bgimage="img/AdultSwim-Final.png" 
+				projname="VR 360 Video Player (Gear VR)"
+				state="/adultswim">
+			</project-item>
+			<project-item 
+				bgimage="img/theblu.jpg" 
+				projname="theBlu Oculus Prototype (Unity3D)"
+				state="/theblu">
+			</project-item>
+			<project-item 
+				bgimage="img/bloom.png" 
+				projname="Bloom (Unity3D)"
+				state="/bloom">
+			</project-item>
+			<project-item 
+				bgimage="img/StreetsOfIndia.png" 
+				projname="Streets of India (iPad/Unity3D)"
+				state="/streetsofindia">
+			</project-item>
+			<project-item 
+				bgimage="img/rasterizer.png" 
+				projname="Software Rasterizer (C++)"
+				state="/rasterizer">
+			</project-item>
+			<project-item 
+				bgimage="img/marchingcubes.png" 
+				projname="Marching Cubes (C++/OpenGL)"
+				state="/marchingcubes">
+			</project-item>
+			<project-item 
+				bgimage="img/skeletalanim.png" 
+				projname="Skeletal Animation (C++/OpenGL)"
+				state="/skeletalanim">
+			</project-item>
 		</div>
 
 		<!-- ABOUT ME SECTION -->
+		<a name="AboutMe"></a>
 		<div class="row" style="padding-top: 50px; background-color:blue; z-index:1;">
-
-			<div class="col-md-12 text-center">
-				<h1 style="color:#fff;">About Me</h1>
+			<div class="col-lg-12 col-sm-12 col-xs-12 text-center">
+				<h1 style="color:#fff; padding-bottom:20px;">About Me</h1>
 				<span>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pulvinar mollis purus ut rutrum. Nunc eleifend sagittis nisl, at imperdiet nulla dapibus at. Suspendisse pellentesque orci ut faucibus facilisis. Duis lacinia bibendum lacus rutrum ullamcorper. Nullam porttitor, mauris placerat fermentum tincidunt, elit libero dictum mauris, in convallis mauris ante quis augue. Quisque velit metus, hendrerit non venenatis at, tempus ac nunc. Donec ligula est, semper et faucibus ut, consectetur eget sapien. Donec nisi metus, consequat eu purus nec, rutrum efficitur erat. In venenatis eros a lacus gravida, et malesuada nulla semper. Fusce quis massa quam. Ut auctor pulvinar lacus at vestibulum. Sed quis elit accumsan, pretium erat eu, iaculis ex. Quisque id finibus ipsum, ut ornare enim. Aenean egestas sollicitudin pulvinar. Nam tempus quam eros, eget imperdiet nulla suscipit ultricies. Suspendisse a magna sit amet quam egestas cursus ut pharetra arcu.
+					I am an engineer with 4+ years of experience in video game development and 10+ 
+					years in software development. I developed gameplay experiences for XCom 2, using 
+					Unreal Engine 3, on PC, PS4 and Xbox 1 platforms. Previously in my career, I worked 
+					with the Oculus Rift, the Gear VR and also helped develop the next advancements in 
+					location-based gaming. Additionally, I was a Project Leader on six other projects, 
+					two of which were well received student games. 
 				</span>
 			</div>
 		</div>
 
 		<!-- FOOTER -->
-		<div class="row"  style="padding-top: 10px; padding-bottom: 5px;">
+		<!--<div class="row"  style="padding-top: 10px; padding-bottom: 5px;">
 			<div class="col-md-12">
 				<p>Footer info goes here...</p>
 			</div>
+		</div>-->
+		<div class="row" style="padding-bottom: 30px;">
 		</div>
 	</div>
 </body>

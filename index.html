@@ -70,15 +70,15 @@
 					spanning from mobile games to web development. Previously I worked on multiple 
 					games and applications, and I even started my own consulting company.</br></br>
 				</h4>
+				
+				<!-- Arrow -->
+				<div class="col-md-12 text-center" id="continue-arrow">
+					<span class="fa fa-arrow-down fa-2x" style="color: #fff;"></span>
+				</div>
 			</div>
 			<div class="col-md-2"></div>
 		</div>
 
-		<div class="row">
-			<div class="col-md-12 text-center" style="padding-top: 20%;">
-				<span class="fa fa-arrow-down fa-2x" style="color: #fff;"></span>
-			</div>
-		</div>
 
 		<!-- PROJECTS SECTION -->
 		<a name="Projects"></a>
@@ -148,6 +148,26 @@
 		<div class="row" style="padding-bottom: 30px;">
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+		(function() {
+			var viewHeight = $(window).height();
+			var viewWidth = $(window).width();
+	
+			$("#intro-div").height(viewHeight);
+
+			var arrowPos = viewHeight - $("#continue-arrow").innerHeight() - 5;
+			var arrowRotation = 0;
+			$("#continue-arrow").offset({top: arrowPos});
+
+			// Continuously rotate the 'continue' arrow
+			setInterval(function() {
+				var val = "rotateY(" + arrowRotation + "deg)";
+				$("#continue-arrow").css("transform", val);
+				arrowRotation = (arrowRotation > 360) ? arrowRotation - 360 : arrowRotation + 1.25;
+			}, 15);
+		})();
+		</script>
 </body>
 
 </html>

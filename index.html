@@ -87,8 +87,30 @@
 			<div class="col-md-12 text-center">
 				<h1 style="color:#fff; padding-bottom:20px; padding-top:10px;">Projects</h1>
 			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<div ui-view="modal" autoscroll="false"></div>
+			</div>
+		</div>
 
-			<div ui-view="modal" autoscroll="false"></div>
+		<div class="row">
+			<project-item
+				bgimage="img/DisneyLogo.jpg"
+				projname="Disney (Unity/AngularJS/NodeJS)"
+				state="modal.disney">
+			</project-item>
+			<project-item
+				bgimage="img/raw-data.jpg"
+				projname="Raw Data (Rift/Vive/PSVR)"
+				state="modal.rawdata">
+			</project-item>
+			<project-item
+				bgimage="img/VAx/VAx.png"
+				projname="Visual Analytix (AngularJS/NodeJS/MongoDB)"
+				state="modal.vax">
+			</project-item>
 			<project-item 
 				bgimage="img/xcom2.png"
 				projname="XCom 2 (PC/XB1/PS4)"

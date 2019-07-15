@@ -144,4 +144,39 @@
 		};
 	});
 
+	app.directive("videoItem", function($sce) {
+		return {
+			restrict: "E",
+			transclude: true,
+			templateUrl: "partials/video.html",
+			scope: {
+				title: '@',
+				code: '@'
+			},
+			link: function(scope, element, attrs, ctrl, transclude) {
+				scope.$watch('code', function(newVal)
+				{
+					if (newVal)
+					{
+						scope.url = $sce.trustAsResourceUrl("https://www.youtube.com/embed/" + newVal);
+					}
+				});
+			}
+		};
+	});
+	app.directive("imageItem", function() {
+		return {
+			restrict: "E",
+			transclude: true,
+			templateUrl: "partials/image.html",
+			scope: {
+				title: '@',
+				url: '@'
+			},
+			link: function(scope) {
+				
+			}
+		};
+	});
+
 })();

@@ -12,5 +12,8 @@
   },
   "author": "Adam Smith",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/adam19/personalwebsite#readme"
+  "homepage": "https://bitbucket.org/adam19/personalwebsite#readme",
+  "dependencies": {
+    "three": "^0.106.2"
+  }
 }

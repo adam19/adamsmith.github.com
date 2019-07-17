@@ -16,12 +16,12 @@
 				{
 					"type": "video",
 					"title": "Beauty and the Beast: Perfect Match",
-					"url": "https://www.youtube.com/embed/AuzVZLqdvmQ"
+					"code": "AuzVZLqdvmQ"
 				},
 				{
 					"type": "video",
 					"title": "Disney Dream Treats",
-					"url": "https://www.youtube.com/embed/_GfgACr3Rr8"
+					"code": "_GfgACr3Rr8"
 				}
 			],
 			"tags": [
@@ -43,11 +43,66 @@
 				{
 					"type": "video",
 					"title": "Raw Data Trailer",
-					"url": "https://www.youtube.com/embed/IYLC812nDcI"
+					"code": "IYLC812nDcI"
 				}
 			],
 			"tags": [
 				"UE4", "C++", "VR", "Oculus", "Playstation"
+			]
+		},
+		{
+			"title": "Visual Analytix (Angular JS, Node JS, Mongo DB)",
+			"state": "modal.vax",
+			"img": "img/VAx/VAx.png",
+			"leftContent": [
+				"Visual Analytix is a systems engineering analysis tool built for government operations. It's purpose is for determining the best way to achieve a goal scaling from small detailed systems all the way to large operations involving large numbers of people.",
+            	"This was the first project my consulting company took on. I took over the project as the lead software engineer working along-side several systems engineers. A large part of my development process was working with the systems engineers to find out their workflow when analyzing systems, and then taking those details and implementing them in software.",
+				"The application is web-based with a backend written in NodeJS with a MongoDB database. The front-end needed to be re-written and optimized piece-by-piece since the application transitioned through many hands and iterations with very little cohesion. It evolved to use AngularJS and Google Material frameworks to ease development and code reuse.",
+				"A portion of VAx allows uploading, viewing and modifying 3D CAD models. For the initial prototypes I implemented a viewer in WebGL using ThreeJS and a couple of libraries to support OBJ and FBX files. One of the key features was to add/remove/swap parts on a model. I added an interface along-side the viewer to toggle the different parts using a dynamic menu listing the available pieces.",
+				"One of the major features of VAx is to manage all of the users. This includes project managers, engineers, accounting, etc. all the way down to the final end user of the system being analyzed. I built a very robust user-management system which allowed admins and project managers to set up any combination of privileges for their project. Since this can get confusing, a security flag chart displays what is available and unavailable for each user or user-group. Security was guaranteed using a combination of privilege checks, cookies and some local file storage support in tandem with periodic user account checks with the backend."
+			],
+			"rightContent": [
+				{
+					"type": "image",
+					"title": "",
+					"url": "../img/VAx/VAx001.png"
+				},
+				{
+					"type": "image",
+					"title": "",
+					"url": "../img/VAx/VAx002.png"
+				},
+				{
+					"type": "image",
+					"title": "",
+					"url": "../img/VAx/VAx003.png"
+				}
+			],
+			"tags": [
+				"Web", "AngularJS"
+			]
+		},
+		{
+			"title": "XCom 2 (PC/XB1/PS4)",
+			"state": "modal.xcom2",
+			"img": "img/xcom2.png",
+			"leftContent": [
+				
+			],
+			"rightContent": [
+				{
+					"type": "video",
+					"title": "XCom 2 Console Announcement",
+					"code": "4Zq_audaBSw"
+				},
+				{
+					"type": "video",
+					"title": "Saturation-Fire",
+					"code": "RW8wVFR-fgE?start=285"
+				},
+			],
+			"tags": [
+				"Web", "AngularJS"
 			]
 		}
 	]

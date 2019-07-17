@@ -1,5 +1,5 @@
 <!doctype html>
-<html data-ng-app="portfolio">
+<html data-ng-app="Portfolio">
 
 <head>
 	<title>Adam Smith's Portfolio Website</title>
@@ -13,7 +13,6 @@
 	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
 	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
 	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
-	<script type='text/javascript' src="node_modules/angular-video/js/anguvideo.js"></script>
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src='node_modules/bootstrap/dist/js/bootstrap.min.js'></script>
 	<script type="text/javascript" src='app.js'></script>
@@ -81,19 +80,40 @@
 
 
 		<!-- PROJECTS SECTION -->
+		<div ng-controller="ProjectController">
+			<!-- Modal View for projects -->
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<div ui-view="modal" autoscroll="false"></div>
+				</div>
+			</div>
+
+			<!-- List of projects -->
+			<div class="row">
+				<div class="col-md-12">
+					<project-item 
+						ng-repeat="proj in projectList"
+						bgimage={{proj.img}}
+						projname={{proj.title}}
+						state={{proj.state}}>
+					</project-item>
+				</div>
+			</div>
+		</div>
+
+
 		<a name="Projects"></a>
 		<div class="row">
-
 			<div class="col-md-12 text-center">
 				<h1 style="color:#fff; padding-bottom:20px; padding-top:10px;">Projects</h1>
 			</div>
 		</div>
 		
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-md-12 text-center">
 				<div ui-view="modal" autoscroll="false"></div>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="row">
 			<project-item

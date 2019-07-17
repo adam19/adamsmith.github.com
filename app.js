@@ -1,5 +1,5 @@
 (function() {
-	var app = angular.module("portfolio", ['ui.router', 'ngAnimate', 'ui.bootstrap']);
+	var app = angular.module("Portfolio", ['ui.router', 'ngAnimate', 'ui.bootstrap']);
 
 	app.config(function ($stateProvider, $urlRouterProvider) {
 			$urlRouterProvider.otherwise('modal');
@@ -117,6 +117,24 @@
 		}
 	);
 
+	app.controller("ProjectController", ["$http", "$scope", function($http, $scope) {
+		$scope.projectList = [];
+
+		$http.get("./projects.json").then(
+			function success(response) {
+				if (response && response.data && response.data.Projects)
+				{
+					$scope.projectList = response.data.Projects;
+				}
+			},
+			function error(response) {
+				console.log("Error: " + response.statusText);
+			}
+		);
+
+		
+	}]);
+
 	app.directive("projectItem", function() {
 		return {
 			restrict: "E",
@@ -133,16 +151,7 @@
 		};
 	});
 
-	app.directive("projectInfo", function() {
-		return {
-			restrict: "E",
-			transclude: true,
-			templateUrl: "partials/projectInfo.html",
-			scope: {
-				
-			}
-		};
-	});
+	
 
 	app.directive("videoItem", function($sce) {
 		return {

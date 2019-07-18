@@ -119,12 +119,15 @@
 
 	app.controller("ProjectController", ["$http", "$scope", function($http, $scope) {
 		$scope.projectList = [];
+		$scope.tagToProjectMap = [];
 
 		$http.get("./projects.json").then(
 			function success(response) {
 				if (response && response.data && response.data.Projects)
 				{
 					$scope.projectList = response.data.Projects;
+
+					populateTags($scope.projectList, $scope.tags);
 				}
 			},
 			function error(response) {
@@ -132,7 +135,39 @@
 			}
 		);
 
-		
+		var populateTags = function(projects, tags)
+		{
+			if (!projects)
+			{
+				return;
+			}
+
+			tags = [];
+
+			for(var i=0; i<projects.length; i++)
+			{
+				var proj = projects[i];
+
+				for(var j=0; j<proj.tags.length; j++)
+				{
+					if (!tags[proj.tags[j]])
+					{
+						tags[proj.tags[j]] = [];
+					}
+
+					tags[proj.tags[j]].push(proj.title);
+				}
+			}
+
+			// for (var key in tags)
+			// {
+			// 	console.log(key + ":");
+			// 	for (var i=0; i<tags[key].length; i++)
+			// 	{
+			// 		console.log("\t" + tags[key][i]);
+			// 	}
+			// }
+		}
 	}]);
 
 	app.directive("projectItem", function() {
@@ -150,8 +185,6 @@
 			}
 		};
 	});
-
-	
 
 	app.directive("videoItem", function($sce) {
 		return {

@@ -8,11 +8,13 @@
 	<link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css">
 	<link rel="stylesheet" href="style.css">
 
+	<!-- <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.js"></script> -->
 	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
 	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
-	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
@@ -76,11 +78,10 @@
 
 
 		<!-- PROJECTS SECTION -->
-		<div ng-controller="ProjectController">
-			<!-- Modal View for projects -->
+		<div ng-controller="ProjectController as pc">
 			<div class="row">
 				<div class="col-md-12 text-center">
-					<div ui-view="modal" autoscroll="false"></div>
+					<project-modal selectedproject="{{currentProject}}"></project-modal>
 				</div>
 			</div>
 
@@ -91,14 +92,12 @@
 				</div>
 			</div>
 			
-			<!-- List of projects -->
 			<div class="row">
 				<div class="col-md-12">
 					<project-item 
 						ng-repeat="proj in projectList"
 						bgimage={{proj.img}}
-						projname={{proj.title}}
-						state={{proj.state}}>
+						projname={{proj.title}}>
 					</project-item>
 				</div>
 			</div>

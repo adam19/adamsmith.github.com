@@ -1,5 +1,7 @@
 body {
 	font-family: "Tahoma", Geneva, sans-serif; 
+	-webkit-font-smoothing: antialiased;
+	-moz-font-smoothing: antialiased;
 }
 
 h2 {
@@ -20,6 +22,12 @@ a
 span {
 	color: #fff;
 }
+
+/* Helpful for debugging AngularJS scopes */
+/* .ng-scope  {
+	border: 1px solid red;
+	margin: 3px;
+} */
 
 .cover {
 	position: fixed;

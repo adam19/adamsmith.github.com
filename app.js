@@ -121,6 +121,8 @@
 		$scope.projectList = [];
 		$scope.tagToProjectMap = [];
 
+		console.log("ProjectController $id=" + $scope.$id);
+
 		$http.get("./projects.json").then(
 			function success(response) {
 				if (response && response.data && response.data.Projects)
@@ -168,7 +170,72 @@
 			// 	}
 			// }
 		}
+
+		$scope.setProjectByName = function(projectName)
+		{
+			var currentTitle = '';
+			if ($scope.currentProject != null && $scope.currentProject.title != null)
+			{
+				currentTitle = $scope.currentProject.title;
+			}
+
+			console.log("setProjectByName('" + currentTitle + "' => '" + projectName + "')");
+
+			for (var i=0; i<$scope.projectList.length; i++)
+			{
+				if ($scope.projectList[i].title == projectName)
+				{
+					$scope.currentProject = $scope.projectList[i];
+				}
+			}
+		}
 	}]);
+
+	app.directive("projectModal", function($rootScope, $compile)
+	{
+		// 			// Clicking outside of the modal closes it
+		// 			$(document).on('click', '.Modal-backdrop, .Modal-holder', function() {
+		// 				$state.go('base');
+		// 			});
+		// 			$(document).on('click', '.Modal-box, .Modal-box *', function(e) {
+		// 				e.stopPropagation();
+		// 			});
+
+		return {
+			scope: {
+				selectedProject: '=',
+			},
+			transclude: true,
+			link: function(scope, element, attrs)
+			{
+				scope.projectName = "UNKNOWN PROJECT NAME";
+				scope.leftSideData = [];
+				scope.rightSideMedia = [];
+				scope.isHidden = true;
+
+				scope.setProjectData = function(projectData) 
+				{
+					scope.leftSideData = [];
+					for(var para in projectData.leftContent)
+					{
+						//addParagraph(para);
+						scope.leftSideData.push(para);
+					}
+				};
+
+				var addParagraph = function(paragraphStr)
+				{
+					console.log("Adding paragraph: " + paragraphStr);
+
+					var pElem = "<p>" + paragraphStr + "</p>";
+					var newScope = scope.$new();
+					var newElement = $compile(pElem)(newScope);
+					element.append(newElement);
+				}
+			},
+			templateUrl: "partials/modalTemplate.html"
+		};
+	})
 
 	app.directive("projectItem", function() {
 		return {
@@ -178,10 +245,24 @@
 			scope: {
 				bgimage: '@',
 				projname: '@',
-				state: '@'
+				setProjectByName: '&'
 			},
 			link: function(scope, element, attrs, ctrl, transclude) {
-				
+				scope.onClicked = function()
+				{
+					console.log("projectItem " + scope.$id + " clicked!");
+
+					var projname = scope.projname;
+					//scope.$parent.setProjectByName(scope.projname);
+					scope.setProjectByName({projname: projname});
+
+
+
+					// CONTINUE WORKING ON THIS SECTION TO GET THE SCOPE BINDINGS WORKING !!!
+
+
+
+				}
 			}
 		};
 	});

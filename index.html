@@ -8,7 +8,10 @@
 	<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="style.css">
 
-	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular/angular.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+	<!-- <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script> -->
 	<script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
 	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
@@ -84,7 +87,9 @@
 			<!-- Modal View for projects -->
 			<div class="row">
 				<div class="col-md-12 text-center">
-					<div ui-view="modal" autoscroll="false"></div>
+					{{currentProject.title}}
+					<project-modal selected-project="currentProject"></project-modal>
+					<!-- FOR SOME REASON THE CURRENTPROJECT DATA IS NOT MOVING INTO THE PROJECT MODAL -->
 				</div>
 			</div>
 
@@ -102,7 +107,7 @@
 						ng-repeat="proj in projectList"
 						bgimage={{proj.img}}
 						projname={{proj.title}}
-						state={{proj.state}}>
+						set-project-by-name="setProjectByName(projname)">
 					</project-item>
 				</div>
 			</div>

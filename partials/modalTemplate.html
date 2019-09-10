@@ -1,10 +1,10 @@
 <div>
-	<h2>{{currentProject.title}}</h2>
+	<h2>{{selectedProject.title}}</h2>
 
 	<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-left Modal-content scrollbar">
 		<br>
 		<span> 
-			<p ng-repeat="para in leftSideData"></p>
+			<p ng-repeat="para in leftSideData">{{para}}</p>
 		</span>
 	</div>
 

@@ -5,7 +5,7 @@
 	<title>Adam Smith's Portfolio Website</title>
 
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" type="text/html">
 	<link rel="stylesheet" href="style.css">
 
 	<script type="text/javascript" src="node_modules/angular/angular.js"></script>
@@ -87,9 +87,7 @@
 			<!-- Modal View for projects -->
 			<div class="row">
 				<div class="col-md-12 text-center">
-					{{currentProject.title}}
 					<project-modal selected-project="currentProject"></project-modal>
-					<!-- FOR SOME REASON THE CURRENTPROJECT DATA IS NOT MOVING INTO THE PROJECT MODAL -->
 				</div>
 			</div>
 

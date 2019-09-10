@@ -120,6 +120,7 @@
 
 						/*
 							* GENERATE THE MEDIA CONTENT AND ATTACH IT TO THE ELEMENT
+							* http://jsfiddle.net/ADukg/16420/
 						 */
 					}
 					

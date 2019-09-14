@@ -1,22 +1,24 @@
 <!doctype html>
-<html data-ng-app="portfolio">
+<html data-ng-app="Portfolio">
 
 <head>
 	<title>Adam Smith's Portfolio Website</title>
 
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css">
 	<link rel="stylesheet" href="style.css">
 
+	<!-- <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.js"></script> -->
 	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
 	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
-	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
-	<script type='text/javascript' src="node_modules/angular-video/js/anguvideo.js"></script>
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src='node_modules/bootstrap/dist/js/bootstrap.min.js'></script>
-	<script type="text/javascript" src='app.js'></script>
+	<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
 </head>
 
 <body>
@@ -32,24 +34,19 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li>
 						<a href="https://bitbucket.org/adam19/">
-						<span class="fa fa-bitbucket fa-2x"></span>
+						<span class="fab fa-bitbucket fa-2x"></span>
 						</a>
 					</li>
 					<li>
 						<a href="https://github.com/adam19">
-						<span class="fa fa-github fa-2x"></span>
+						<span class="fab fa-github fa-2x"></span>
 						</a>
 					</li>
 					<li>
 						<a href="https://www.linkedin.com/in/adam19">
-						<span class="fa fa-linkedin fa-2x"></span>
+						<span class="fab fa-linkedin-in fa-2x"></span>
 						</a>
 					</li>
-					<!--<li>
-						<a href="#">
-						<span class="fa fa-envelope fa-2x"></span>
-						</a>
-					</li>-->
 				</ul>
 			</div>
 		</div>
@@ -80,77 +77,32 @@
 
 
 		<!-- PROJECTS SECTION -->
-		<a name="Projects"></a>
-		<div class="row">
+		<div ng-controller="ProjectController as pc">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<project-modal selectedproject="{{currentProject}}"></project-modal>
+				</div>
+			</div>
 
-			<div class="col-md-12 text-center">
-				<h1 style="color:#fff; padding-bottom:20px; padding-top:10px;">Projects</h1>
+			<a name="Projects"></a>
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h1 style="color:#fff; padding-bottom:20px; padding-top:10px;">Projects</h1>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-md-12">
+					<project-item 
+						ng-repeat="proj in projectList"
+						bgimage={{proj.img}}
+						projname={{proj.title}}>
+					</project-item>
+				</div>
 			</div>
 		</div>
-		
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<div ui-view="modal" autoscroll="false"></div>
-			</div>
-		</div>
 
-		<div class="row">
-			<project-item
-				bgimage="img/DisneyLogo.jpg"
-				projname="Disney (Unity/AngularJS/NodeJS)"
-				state="modal.disney">
-			</project-item>
-			<project-item
-				bgimage="img/raw-data.jpg"
-				projname="Raw Data (Rift/Vive/PSVR)"
-				state="modal.rawdata">
-			</project-item>
-			<project-item
-				bgimage="img/VAx/VAx.png"
-				projname="Visual Analytix (AngularJS/NodeJS/MongoDB)"
-				state="modal.vax">
-			</project-item>
-			<project-item 
-				bgimage="img/xcom2.png"
-				projname="XCom 2 (PC/XB1/PS4)"
-				state="modal.xcom2">
-			</project-item>
-			<project-item 
-				bgimage="img/AdultSwim-Final.png" 
-				projname="VR 360 Video Player (Gear VR)"
-				state="modal.adultswim">
-			</project-item>
-			<project-item 
-				bgimage="img/theblu.jpg" 
-				projname="theBlu Oculus Prototype (Unity3D)"
-				state="modal.theblu">
-			</project-item>
-			<project-item 
-				bgimage="img/bloom.png" 
-				projname="Bloom (Unity3D)"
-				state="modal.bloom">
-			</project-item>
-			<project-item 
-				bgimage="img/StreetsOfIndia.png" 
-				projname="Streets of India (iPad/Unity3D)"
-				state="modal.streetsofindia">
-			</project-item>
-			<project-item 
-				bgimage="img/rasterizer.png" 
-				projname="Software Rasterizer (C++)"
-				state="modal.rasterizer">
-			</project-item>
-			<project-item 
-				bgimage="img/marchingcubes.png" 
-				projname="Marching Cubes (C++/OpenGL)"
-				state="modal.marchingcubes">
-			</project-item>
-			<project-item 
-				bgimage="img/skeletalanim.png" 
-				projname="Skeletal Animation (C++/OpenGL)"
-				state="modal.skeletalanim">
-			</project-item>
-		</div>
+
 
 		<!-- ABOUT ME SECTION -->
 		<!--<a name="AboutMe"></a>

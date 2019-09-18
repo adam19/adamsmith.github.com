@@ -135,10 +135,22 @@
 					idx = 0;
 					for(var media in projectData.rightContent)
 					{
+						var html = "";
+						switch (projectData.rightContent[media].type)
+						{
+							case "image":
+								html = addImage(projectData.rightContent[media]);
+								break;
+
+							case "video":
+								html = addVideo(projectData.rightContent[media]);
+								break;
+						}
 						scope.rightSideMedia.push({
-							html: projectData.rightContent[media],
+							html: html,
 							id: idx
 						});
+						idx++;
 
 						/*
 							* GENERATE THE MEDIA CONTENT AND ATTACH IT TO THE ELEMENT
@@ -151,9 +163,26 @@
 
 				var addParagraph = function(paragraphStr)
 				{
-					console.log("Adding paragraph: " + paragraphStr);
-
 					var pElem = "<p>" + paragraphStr + "</p>";
+					var newScope = scope.$new();
+					var newElement = $compile(pElem)(newScope);
+					return element.append(newElement)[0];
+				}
+
+				var addImage = function(mediaData)
+				{
+					var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "'</image-item>\n";
+					var newScope = scope.$new();
+					var newElement = $compile(pElem)(newScope);
+					return element.append(newElement)[0];
+				}
+
+				var addVideo = function(mediaData)
+				{
+					var pElem = "<h4>" + mediaData.title + "</h4>\n"
+								+ "<div class='video-container'>\n"
+								+ "<iframe width='826' width='620' src='https://www.youtube.com/embed/" + mediaData.code + "'></iframe>\n"
+								+ "</div>";
 					var newScope = scope.$new();
 					var newElement = $compile(pElem)(newScope);
 					return element.append(newElement)[0];

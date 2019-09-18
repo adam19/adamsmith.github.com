@@ -106,17 +106,39 @@
 				{
 					if (!projectData)
 						return;
+						
+					var idx;
 
+					// Clear out the previous DOM elements
+					for(var elem in scope.leftSideData)
+					{
+						scope.leftSideData[elem].html.innerHTML = "";
+					}
 					scope.leftSideData = [];
+
+					for (var elem in scope.rightSideMedia)
+					{
+						scope.rightSideMedia[elem].innerHTML = "";
+					}
+					scope.rightSideMedia = [];
+
+					idx = 0;
 					for(var para in projectData.leftContent)
 					{
-						scope.leftSideData.push(projectData.leftContent[para]);
+						scope.leftSideData.push({
+							html: addParagraph(projectData.leftContent[para]),
+							id: idx
+						});
+						idx++;
 					}
 
-					scope.rightSideMedia = [];
+					idx = 0;
 					for(var media in projectData.rightContent)
 					{
-						scope.rightSideMedia.push(projectData.rightContent[media]);
+						scope.rightSideMedia.push({
+							html: projectData.rightContent[media],
+							id: idx
+						});
 
 						/*
 							* GENERATE THE MEDIA CONTENT AND ATTACH IT TO THE ELEMENT
@@ -134,7 +156,7 @@
 					var pElem = "<p>" + paragraphStr + "</p>";
 					var newScope = scope.$new();
 					var newElement = $compile(pElem)(newScope);
-					element.append(newElement);
+					return element.append(newElement)[0];
 				}
 			},
 			templateUrl: "partials/modalTemplate.html"

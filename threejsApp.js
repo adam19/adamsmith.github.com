@@ -18,12 +18,22 @@ var controls = {};
 var player = {
     turnSpeed: .001,
     speed: .1,
-    velocity: 0
+	velocity: new THREE.Vector3(),
+	direction: new THREE.Vector3()
 };
-var keyForward = '87';
-var keyBackward= '83';
-var keyStrafeLeft = '65';
-var keyStrafeRight = '68';
+var keyForward = '87';      // 'w'
+var keyBackward= '83';      // 's'
+var keyStrafeLeft = '65';	// 'a'
+var keyStrafeRight = '68';	// 'd'
+var keyMoveUp = '81';		// 'q'
+var keyMoveDown = '69';		// 'e'
+var moveUp = false;
+var moveDown = false;
+var moveForward = false;
+var moveBackward = false;
+var strafeLeft = false;
+var strafeRight = false;
+var prevTime = 0;
 
 var cube;
 var cubeTexture;
@@ -44,10 +54,21 @@ var init = function()
     
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.set(0, 0, 10);
-    // camera.position.set(-4, 4, 10);
 
-    controls = new THREE.FirstPersonControls(camera, container);
-    // controls = new THREE.FlyControls(camera, container);
+	controls = new THREE.PointerLockControls(camera, container);
+    controls.addEventListener('lock', function() {
+        console.log("controls locked");
+    });
+    controls.addEventListener('unlock', function() {
+        console.log("controls unlocked");
+	});
+	document.addEventListener('mousedown', function() {
+		controls.lock();
+	});
+	document.addEventListener('mouseup', function() {
+		controls.unlock();
+	});
+    scene.add(controls.getObject());
     
     document.addEventListener('keydown', ({ keyCode }) => {
         controls[keyCode] = true;
@@ -55,23 +76,6 @@ var init = function()
     document.addEventListener('keyup', ({ keyCode }) => {
         controls[keyCode] = false;
     });
-    // document.addEventListener('mousemove', ({ event }) => {
-    //     if (!event)
-    //     {
-    //         event = window.event;
-    //     }
-
-    //     var x = event.clientX;
-    //     var y = event.clientY;
-
-    //     controls.isMouseMoving = true;
-
-    //     controls.prevMouseX = controls.currMouseX;
-    //     controls.prevMouseY = controls.currMouseY;
-        
-    //     controls.currMouseX = x;
-    //     controls.currMouseY = y;
-    // });
 
     
     const geom = new THREE.BoxBufferGeometry(2, 2, 2);
@@ -113,47 +117,73 @@ var init = function()
     });
 
     container.appendChild(renderer.domElement);
+}
 
+var processInput = function()
+{
+	moveUp = moveDown = moveForward = moveBackward = strafeLeft = strafeRight = false;
 
+    if (controls[keyBackward])
+    {
+		moveForward = true;
+    }
+    if (controls[keyForward])
+    {
+		moveBackward = true;
+    }
+    if (controls[keyStrafeRight])
+    {
+		strafeRight = true;
+    }
+    if (controls[keyStrafeLeft])
+    {
+		strafeLeft = true;
+	}
+	if (controls[keyMoveUp])
+	{
+		moveUp = true;
+	}
+	if (controls[keyMoveDown])
+	{
+		moveDown = true;
+	}
+}
+
+var handleMovement = function()
+{
+	var time = performance.now();
+	var delta = (time - prevTime) / 1000.0;
+
+	player.velocity.x -= player.velocity.x * delta * 10.0;
+	player.velocity.z -= player.velocity.z * delta * 10.0;
+	player.direction.z = Number(moveForward) - Number(moveBackward);
+	player.direction.x = Number(strafeRight) - Number(strafeLeft);
+	player.direction.normalize();
+
+	if (moveForward || moveBackward)
+	{
+		player.velocity.z += player.direction.z * 300.0 * delta;
+	}
+	if (strafeLeft || strafeRight)
+	{
+		player.velocity.x -= player.direction.x * 300.0 * delta;
+	}
+
+	if (player.velocity.length() > 300.0)
+	{
+		player.velocity = player.velocity.normalize() * 300.0;
+	}
+
+	controls.moveRight(-player.velocity.x * delta);
+	controls.moveForward(-player.velocity.z * delta);
+
+	prevTime = time;
 }
 
 var update = function()
 {
-    if (controls[keyBackward])
-    {
-        console.log("forward");
-        camera.position.x -= Math.sin(camera.rotation.y) * player.speed;
-        camera.position.z -= -Math.cos(camera.rotation.y) * player.speed;
-    }
-    if (controls[keyForward])
-    {
-        console.log("backward");
-        camera.position.x -= Math.sin(camera.rotation.y) * player.speed;
-        camera.position.z += -Math.cos(camera.rotation.y) * player.speed;
-    }
-    if (controls[keyStrafeRight])
-    {
-        console.log("strafe left");
-        camera.position.x += Math.sin(camera.rotation.y + Math.PI / 2) * player.speed;
-        camera.position.z += -Math.cos(camera.rotation.y + Math.PI / 2) * player.speed;
-    }
-    if (controls[keyStrafeLeft])
-    {
-        console.log("strafe right");
-        camera.position.x += Math.sin(camera.rotation.y - Math.PI / 2) * player.speed;
-        camera.position.z += -Math.cos(camera.rotation.y - Math.PI / 2) * player.speed;
-    }
-
-    // if (controls.isMouseMoving)
-    // {
-    //     var dx = controls.currMouseX - controls.prevMouseX;
-    //     var dy = controls.currMouseY - controls.prevMouseY;
-
-    //     console.log("D(" + dx + "," + dy + ")");
-
-    //     camera.rotation.y += (dy * player.turnSpeed);
-    // }
-    // controls.isMouseMoving = false;
+	processInput();
+	handleMovement();
 }
 
 var draw = function()

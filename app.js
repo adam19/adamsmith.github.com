@@ -75,6 +75,47 @@
 		}
 	}]);
 
+	app.directive("projectDescriptionContainer", function()
+	{
+		return {
+			restrict: "E",
+			transclude: true,
+			scope: {
+				descriptionData: "="
+			},
+			link: function(scope, element, attrs, ctrl, transclude) {
+				scope.$watch('descriptionData', function(newValue, oldValue)
+				{
+					console.log("descriptionData.length = " + scope.descriptionData.length);
+				}, true);
+			}
+		}
+		/*
+			var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "'</image-item>\n";
+			var newScope = scope.$new();
+			var newElement = $compile(pElem)(newScope);
+			return element.append(newElement)[0];
+		 */
+	});
+
+	app.directive("projectMediaContainer", function()
+	{
+		return {
+			restrict: "E",
+			transclude: true,
+			scope: {
+				mediaList: "="
+			},
+			link: function(scope, element, attrs, ctrl, transclude) {
+				
+				scope.$watch('mediaList', function(newValue, oldValue)
+				{
+					console.log("mediaList.length = " + scope.mediaList.length);
+				}, true);
+			}
+		}
+	});
+
 	app.directive("projectModal", function($rootScope, $compile)
 	{
 		// 			// Clicking outside of the modal closes it
@@ -95,6 +136,8 @@
 				scope.projectName = "UNKNOWN PROJECT NAME";
 				scope.leftSideData = [];
 				scope.rightSideMedia = [];
+				scope.leftSideHtml = "";
+				scope.rightSideHtml = "";
 				scope.isHidden = true;
 
 				scope.$watch('selectedProject', function(newValue, oldValue)
@@ -122,6 +165,9 @@
 					}
 					scope.rightSideMedia = [];
 
+					scope.leftSideHtml = "";
+					scope.rightSideHtml = "";
+
 					idx = 0;
 					for(var para in projectData.leftContent)
 					{
@@ -130,6 +176,8 @@
 							id: idx
 						});
 						idx++;
+
+						// scope.leftSideHtml += addParagraph(projectData.leftContent[para])
 					}
 
 					idx = 0;
@@ -146,11 +194,14 @@
 								html = addVideo(projectData.rightContent[media]);
 								break;
 						}
+
 						scope.rightSideMedia.push({
 							html: html,
 							id: idx
 						});
 						idx++;
+
+						// scope.rightSideHtml += html;
 
 						/*
 							* GENERATE THE MEDIA CONTENT AND ATTACH IT TO THE ELEMENT
@@ -164,27 +215,36 @@
 				var addParagraph = function(paragraphStr)
 				{
 					var pElem = "<p>" + paragraphStr + "</p>";
-					var newScope = scope.$new();
-					var newElement = $compile(pElem)(newScope);
+					// var newScope = scope.$new();
+					// var newElement = $compile(pElem)(newScope);
+					// return element.append(newElement)[0];
+
+					var newElement = $compile(pElem)(scope);
 					return element.append(newElement)[0];
 				}
 
 				var addImage = function(mediaData)
 				{
 					var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "'</image-item>\n";
-					var newScope = scope.$new();
-					var newElement = $compile(pElem)(newScope);
+					// var newScope = scope.$new();
+					// var newElement = $compile(pElem)(newScope);
+					// return element.append(newElement)[0];
+
+					var newElement = $compile(pElem)(scope);
 					return element.append(newElement)[0];
 				}
 
 				var addVideo = function(mediaData)
 				{
-					var pElem = "<h4>" + mediaData.title + "</h4>\n"
+					var pElem = "<div><h4>" + mediaData.title + "</h4>\n"
 								+ "<div class='video-container'>\n"
 								+ "<iframe width='826' width='620' src='https://www.youtube.com/embed/" + mediaData.code + "'></iframe>\n"
-								+ "</div>";
-					var newScope = scope.$new();
-					var newElement = $compile(pElem)(newScope);
+								+ "</div></div>";
+					// var newScope = scope.$new();
+					// var newElement = $compile(pElem)(newScope);
+					// return element.append(newElement)[0];
+
+					var newElement = $compile(pElem)(scope);
 					return element.append(newElement)[0];
 				}
 			},
@@ -234,6 +294,7 @@
 			}
 		};
 	});
+
 	app.directive("imageItem", function() {
 		return {
 			restrict: "E",

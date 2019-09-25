@@ -155,8 +155,10 @@ var handleMovement = function()
 	var delta = (time - prevTime) / 1000.0;
 
 	player.velocity.x -= player.velocity.x * delta * 10.0;
+	player.velocity.y -= player.velocity.y * delta * 10.0;
 	player.velocity.z -= player.velocity.z * delta * 10.0;
 	player.direction.z = Number(moveForward) - Number(moveBackward);
+	player.direction.y = Number(moveUp) - Number(moveDown);
 	player.direction.x = Number(strafeRight) - Number(strafeLeft);
 	player.direction.normalize();
 
@@ -168,6 +170,10 @@ var handleMovement = function()
 	{
 		player.velocity.x -= player.direction.x * 300.0 * delta;
 	}
+	if (moveUp || moveDown)
+	{
+		player.velocity.y += player.direction.y * 300.0 * delta;
+	}
 
 	if (player.velocity.length() > 300.0)
 	{
@@ -176,6 +182,7 @@ var handleMovement = function()
 
 	controls.moveRight(-player.velocity.x * delta);
 	controls.moveForward(-player.velocity.z * delta);
+	controls.moveUp(-player.velocity.y * delta);
 
 	prevTime = time;
 }

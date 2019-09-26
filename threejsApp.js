@@ -7,12 +7,14 @@
 // } from './node_modules/three/build/three';
 
 import { RGBELoader } from './node_modules/three/examples/jsm/loaders/RGBELoader.js';
+import { FBXLoader } from './node_modules/three/examples/jsm/loaders/FBXLoader.js';
 
 var scene;
 var camera;
 var renderer;
 var textureLoader;
 var rgbeTextureLoader;
+var fbxLoader;
 
 var controls = {};
 var player = {
@@ -42,7 +44,8 @@ var cubeMaterial;
 var init = function()
 {
     const container = document.querySelector("#scene-container");
-    scene = new THREE.Scene();
+	scene = new THREE.Scene();
+	// window.scene = scene;
     scene.background = new THREE.Color('skyblue');
 
     window.addEventListener('resize', onWindowResize);
@@ -55,27 +58,16 @@ var init = function()
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     camera.position.set(0, 0, 10);
 
-	controls = new THREE.PointerLockControls(camera, container);
-    controls.addEventListener('lock', function() {
-        console.log("controls locked");
-    });
-    controls.addEventListener('unlock', function() {
-        console.log("controls unlocked");
-	});
-	document.addEventListener('mousedown', function() {
-		controls.lock();
-	});
-	document.addEventListener('mouseup', function() {
-		controls.unlock();
-	});
-    scene.add(controls.getObject());
-    
-    document.addEventListener('keydown', ({ keyCode }) => {
-        controls[keyCode] = true;
-    });
-    document.addEventListener('keyup', ({ keyCode }) => {
-        controls[keyCode] = false;
-    });
+	initControls(container);
+
+
+	// // var meshPath = './scene/meshes/rock_b.fbx';
+	// var meshPath = './scene/meshes/Plane.fbx';
+	// // var meshPath = './scene/meshes/Palm_Tree.fbx';
+	// loadModel(meshPath, function(object) {
+	// 	console.log("Loaded model '" + meshPath + "'");
+	// 	scene.add(object);
+	// });
 
     
     const geom = new THREE.BoxBufferGeometry(2, 2, 2);
@@ -106,7 +98,7 @@ var init = function()
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.gammaFactor = 2.2;
-    renderer.gammaOutput = true;
+	renderer.gammaOutput = true;
 
     renderer.toneMapping = THREE.ReinhardToneMapping;
     renderer.toneMappingExposure = 2.0;
@@ -117,6 +109,24 @@ var init = function()
     });
 
     container.appendChild(renderer.domElement);
+}
+
+var loadModel = function(path, success)
+{
+	if (!fbxLoader)
+	{
+		fbxLoader = new FBXLoader();
+	}
+	
+	//load(url: string, onLoad: (object: Group) => void, onProgress?: (event: ProgressEvent) => void, onError?: (event: ErrorEvent) => void) : void;
+	fbxLoader.load(path, function(object) {
+		console.log("Loaded object!");
+		success(object);
+	}, function(progress) {
+		console.log("Progress: " + (100.0 * progress.loaded / progress.total) + "%");
+	}), function(error) {
+		console.log("Error: " + error);
+	};
 }
 
 var processInput = function()
@@ -205,6 +215,38 @@ var onWindowResize = function()
     camera.updateProjectionMatrix();
 
     renderer.setSize(container.clientWidth, container.clientHeight)
+}
+
+
+var initControls = function(container) 
+{
+	controls = new THREE.PointerLockControls(camera, container);
+
+	controls.addEventListener('lock', function () {
+		console.log("controls locked");
+	});
+
+	controls.addEventListener('unlock', function () {
+		console.log("controls unlocked");
+	});
+
+	document.addEventListener('mousedown', function () {
+		controls.lock();
+	});
+
+	document.addEventListener('mouseup', function () {
+		controls.unlock();
+	});
+
+	document.addEventListener('keydown', ({ keyCode }) => {
+		controls[keyCode] = true;
+	});
+
+	document.addEventListener('keyup', ({ keyCode }) => {
+		controls[keyCode] = false;
+	});
+
+	scene.add(controls.getObject());
 }
 
 init();

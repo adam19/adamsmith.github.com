@@ -9,6 +9,8 @@
 import { RGBELoader } from './node_modules/three/examples/jsm/loaders/RGBELoader.js';
 import { FBXLoader } from './node_modules/three/examples/jsm/loaders/FBXLoader.js';
 
+
+var container;
 var scene;
 var camera;
 var renderer;
@@ -43,7 +45,7 @@ var cubeMaterial;
 
 var init = function()
 {
-    const container = document.querySelector("#scene-container");
+    container = document.querySelector("#scene-container");
 	scene = new THREE.Scene();
 	// window.scene = scene;
     scene.background = new THREE.Color('skyblue');
@@ -53,24 +55,30 @@ var init = function()
     const fov = 35;
     const aspect = container.clientWidth / container.clientHeight;
     const near = 0.1;
-    const far = 100;
+    const far = 10000;
     
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.set(0, 0, 10);
+	camera.position.set(100, 50, 100);
+	camera.lookAt(0, 0, 0);
 
 	initControls(container);
 
+	initGrid(-5, 5, 10);
+	initGrid(-5, 5, 100);
 
-	// // var meshPath = './scene/meshes/rock_b.fbx';
-	// var meshPath = './scene/meshes/Plane.fbx';
-	// // var meshPath = './scene/meshes/Palm_Tree.fbx';
-	// loadModel(meshPath, function(object) {
-	// 	console.log("Loaded model '" + meshPath + "'");
-	// 	scene.add(object);
-	// });
+
+	// var meshPath = './scene/meshes/rock_b.fbx';
+	// var meshPath = './scene/meshes/dancing.fbx';
+	var meshPath = './scene/meshes/Palm_Tree.fbx';
+	loadModel(meshPath, function(object) {
+		console.log("Loaded model '" + meshPath + "'");
+
+		//object.scale = new Vector3(0.1, 0.1, 0.1);
+		scene.add(object);
+	});
 
     
-    const geom = new THREE.BoxBufferGeometry(2, 2, 2);
+    const geom = new THREE.BoxBufferGeometry(10, 10, 10);
     //const mat = new THREE.MeshBasicMaterial();
     const mat = new THREE.MeshStandardMaterial({color: 0xffff00});
 
@@ -83,7 +91,8 @@ var init = function()
     cubeTexture.encoding = THREE.sRGBEncoding;
     cubeTexture.anisotropy = 16;
     cubeMaterial = new THREE.MeshStandardMaterial({
-        map: cubeTexture
+		map: cubeTexture,
+		wireframe: true
     });
     
     cube = new THREE.Mesh(geom, cubeMaterial);
@@ -118,7 +127,6 @@ var loadModel = function(path, success)
 		fbxLoader = new FBXLoader();
 	}
 	
-	//load(url: string, onLoad: (object: Group) => void, onProgress?: (event: ProgressEvent) => void, onError?: (event: ErrorEvent) => void) : void;
 	fbxLoader.load(path, function(object) {
 		console.log("Loaded object!");
 		success(object);
@@ -217,7 +225,6 @@ var onWindowResize = function()
     renderer.setSize(container.clientWidth, container.clientHeight)
 }
 
-
 var initControls = function(container) 
 {
 	controls = new THREE.PointerLockControls(camera, container);
@@ -247,6 +254,51 @@ var initControls = function(container)
 	});
 
 	scene.add(controls.getObject());
+}
+
+var initGrid = function(start, stop, scale)
+{
+	var gridMaterial = new THREE.LineBasicMaterial({ color: 0x404040 });
+	var scale;
+	scale = 10;
+	for (var i=start; i<=stop; i++)
+	{
+		var line, lineGeom;
+
+		// X-axis
+		lineGeom = new THREE.Geometry();
+		lineGeom.vertices.push(new THREE.Vector3(i * scale, 0, -5 * scale));
+		lineGeom.vertices.push(new THREE.Vector3(i * scale, 0, 5 * scale));
+		line = new THREE.Line(lineGeom, gridMaterial);
+		scene.add(line);
+		
+		// Z-Axis
+		lineGeom = new THREE.Geometry();
+		lineGeom.vertices.push(new THREE.Vector3(-5 * scale, 0, i * scale));
+		lineGeom.vertices.push(new THREE.Vector3(5 * scale, 0, i * scale));
+		line = new THREE.Line(lineGeom, gridMaterial);
+		scene.add(line);
+	}
+
+	scale = 100;
+	for (var i=start; i<=stop; i++)
+	{
+		var line, lineGeom;
+
+		// X-axis
+		lineGeom = new THREE.Geometry();
+		lineGeom.vertices.push(new THREE.Vector3(i * scale, 0, -5 * scale));
+		lineGeom.vertices.push(new THREE.Vector3(i * scale, 0, 5 * scale));
+		line = new THREE.Line(lineGeom, gridMaterial);
+		scene.add(line);
+		
+		// Z-Axis
+		lineGeom = new THREE.Geometry();
+		lineGeom.vertices.push(new THREE.Vector3(-5 * scale, 0, i * scale));
+		lineGeom.vertices.push(new THREE.Vector3(5 * scale, 0, i * scale));
+		line = new THREE.Line(lineGeom, gridMaterial);
+		scene.add(line);
+	}
 }
 
 init();

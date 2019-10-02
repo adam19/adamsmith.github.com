@@ -75,43 +75,112 @@
 		}
 	}]);
 
-	app.directive("projectDescriptionContainer", function()
+	app.directive("projectDescriptionContainer", function($compile)
 	{
 		return {
 			restrict: "E",
-			transclude: true,
 			scope: {
 				descriptionData: "="
 			},
-			link: function(scope, element, attrs, ctrl, transclude) {
+			link: function(scope, element, attrs, ctrl) {
+				scope.descriptionData = [];
+				scope.descriptionHtml = [];
+				
 				scope.$watch('descriptionData', function(newValue, oldValue)
 				{
-					console.log("descriptionData.length = " + scope.descriptionData.length);
+					if (scope.descriptionData != null && scope.descriptionData.length != null)
+					{
+						// Clear the DOM
+						for(var i=0; i<scope.descriptionHtml.length; i++)
+						{
+							scope.descriptionHtml[i].html.innerHTML = "";
+						}
+						scope.descriptionHtml = [];
+
+						// Generate the new DOM
+						for(var i=0; i<scope.descriptionData.length; i++)
+						{
+							scope.descriptionHtml.push({
+								html: addParagraph(scope.descriptionData[i]),
+								id: i
+							});
+						}
+					}
 				}, true);
+				
+				var addParagraph = function(paragraphStr)
+				{
+					var pElem = "<p>" + paragraphStr + "</p>";
+					var newScope = scope.$new();
+					var newElement = $compile(pElem)(newScope);
+					return element.append(newElement)[0];
+				}
 			}
 		}
-		/*
-			var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "'</image-item>\n";
-			var newScope = scope.$new();
-			var newElement = $compile(pElem)(newScope);
-			return element.append(newElement)[0];
-		 */
 	});
 
-	app.directive("projectMediaContainer", function()
+	app.directive("projectMediaContainer", function($compile)
 	{
 		return {
 			restrict: "E",
-			transclude: true,
 			scope: {
 				mediaList: "="
 			},
-			link: function(scope, element, attrs, ctrl, transclude) {
-				
+			link: function(scope, element, attrs, ctrl) {
+				scope.mediaHtml = [];
+
 				scope.$watch('mediaList', function(newValue, oldValue)
 				{
-					console.log("mediaList.length = " + scope.mediaList.length);
-				}, true);
+					if (scope.mediaList != null && scope.mediaList.length != null)
+					{
+						// Clear the DOM
+						for(var i=0; i<scope.mediaHtml.length; i++)
+						{
+							scope.mediaHtml[i].html.innerHTML = "";
+						}
+						scope.mediaHtml = [];
+
+						// Generate the new DOM
+						for(var i=0; i<scope.mediaList.length; i++)
+						{
+							var html = "";
+							switch (scope.mediaList[i].type)
+							{
+								case "image":
+									html = addImage(scope.mediaList[i]);
+									break;
+	
+								case "video":
+									html = addVideo(scope.mediaList[i]);
+									break;
+							}
+
+							scope.mediaHtml.push({
+								html: html,
+								id: i
+							});
+						}
+					}
+				}, true);				
+
+				var addImage = function(mediaData)
+				{
+					var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "'</image-item>\n";
+					var newScope = scope.$new();
+					var newElement = $compile(pElem)(newScope);
+					return element.append(newElement)[0];
+				}
+
+				var addVideo = function(mediaData)
+				{
+					var pElem = "<div><h4>" + mediaData.title + "</h4>\n"
+								+ "<div class='video-container'>\n"
+								+ "<iframe width='826' width='620' src='https://www.youtube.com/embed/" + mediaData.code + "'></iframe>\n"
+								+ "</div></div>";
+					var newScope = scope.$new();
+					var newElement = $compile(pElem)(newScope);
+					return element.append(newElement)[0];
+				}
 			}
 		}
 	});
@@ -134,10 +203,6 @@
 			link: function(scope, element, attrs)
 			{
 				scope.projectName = "UNKNOWN PROJECT NAME";
-				scope.leftSideData = [];
-				scope.rightSideMedia = [];
-				scope.leftSideHtml = "";
-				scope.rightSideHtml = "";
 				scope.isHidden = true;
 
 				scope.$watch('selectedProject', function(newValue, oldValue)
@@ -149,104 +214,9 @@
 				{
 					if (!projectData)
 						return;
-						
-					var idx;
-
-					// Clear out the previous DOM elements
-					for(var elem in scope.leftSideData)
-					{
-						scope.leftSideData[elem].html.innerHTML = "";
-					}
-					scope.leftSideData = [];
-
-					for (var elem in scope.rightSideMedia)
-					{
-						scope.rightSideMedia[elem].innerHTML = "";
-					}
-					scope.rightSideMedia = [];
-
-					scope.leftSideHtml = "";
-					scope.rightSideHtml = "";
-
-					idx = 0;
-					for(var para in projectData.leftContent)
-					{
-						scope.leftSideData.push({
-							html: addParagraph(projectData.leftContent[para]),
-							id: idx
-						});
-						idx++;
-
-						// scope.leftSideHtml += addParagraph(projectData.leftContent[para])
-					}
-
-					idx = 0;
-					for(var media in projectData.rightContent)
-					{
-						var html = "";
-						switch (projectData.rightContent[media].type)
-						{
-							case "image":
-								html = addImage(projectData.rightContent[media]);
-								break;
-
-							case "video":
-								html = addVideo(projectData.rightContent[media]);
-								break;
-						}
-
-						scope.rightSideMedia.push({
-							html: html,
-							id: idx
-						});
-						idx++;
-
-						// scope.rightSideHtml += html;
-
-						/*
-							* GENERATE THE MEDIA CONTENT AND ATTACH IT TO THE ELEMENT
-							* http://jsfiddle.net/ADukg/16420/
-						 */
-					}
 					
 					scope.projectName = projectData.title;
 				};
-
-				var addParagraph = function(paragraphStr)
-				{
-					var pElem = "<p>" + paragraphStr + "</p>";
-					// var newScope = scope.$new();
-					// var newElement = $compile(pElem)(newScope);
-					// return element.append(newElement)[0];
-
-					var newElement = $compile(pElem)(scope);
-					return element.append(newElement)[0];
-				}
-
-				var addImage = function(mediaData)
-				{
-					var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "'</image-item>\n";
-					// var newScope = scope.$new();
-					// var newElement = $compile(pElem)(newScope);
-					// return element.append(newElement)[0];
-
-					var newElement = $compile(pElem)(scope);
-					return element.append(newElement)[0];
-				}
-
-				var addVideo = function(mediaData)
-				{
-					var pElem = "<div><h4>" + mediaData.title + "</h4>\n"
-								+ "<div class='video-container'>\n"
-								+ "<iframe width='826' width='620' src='https://www.youtube.com/embed/" + mediaData.code + "'></iframe>\n"
-								+ "</div></div>";
-					// var newScope = scope.$new();
-					// var newElement = $compile(pElem)(newScope);
-					// return element.append(newElement)[0];
-
-					var newElement = $compile(pElem)(scope);
-					return element.append(newElement)[0];
-				}
 			},
 			templateUrl: "partials/modalTemplate.html"
 		};

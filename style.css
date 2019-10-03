@@ -125,12 +125,19 @@ span {
 .video-container
 {
 	position: relative;
+	padding: 10px;
+	overflow: hidden;
+}
+
+.video-container-youtube
+{
+	position: relative;
 	padding-bottom: 56.25%;
 	padding-top: 35px;
 	height: 0;
 	overflow: hidden;
 }
-.video-container iframe
+.video-container-youtube iframe
 {
 	position: absolute;
 	top: 0;

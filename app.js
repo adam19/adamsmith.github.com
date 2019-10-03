@@ -153,6 +153,10 @@
 								case "video":
 									html = addVideo(scope.mediaList[i]);
 									break;
+	
+								case "youtube":
+									html = addYoutubeVideo(scope.mediaList[i]);
+									break;
 							}
 
 							scope.mediaHtml.push({
@@ -175,6 +179,17 @@
 				{
 					var pElem = "<div><h4>" + mediaData.title + "</h4>\n"
 								+ "<div class='video-container'>\n"
+								+ "<video width='720' height='405' controls><source src='" + mediaData.src + "' type=\"video/mp4\"></video>\n"
+								+ "</div></div>";
+					var newScope = scope.$new();
+					var newElement = $compile(pElem)(newScope);
+					return element.append(newElement)[0];
+				}
+
+				var addYoutubeVideo = function(mediaData)
+				{
+					var pElem = "<div><h4>" + mediaData.title + "</h4>\n"
+								+ "<div class='video-container-youtube'>\n"
 								+ "<iframe width='826' width='620' src='https://www.youtube.com/embed/" + mediaData.code + "'></iframe>\n"
 								+ "</div></div>";
 					var newScope = scope.$new();
@@ -202,7 +217,6 @@
 			transclude: true,
 			link: function(scope, element, attrs)
 			{
-				scope.projectName = "UNKNOWN PROJECT NAME";
 				scope.isHidden = true;
 
 				scope.$watch('selectedProject', function(newValue, oldValue)
@@ -249,6 +263,27 @@
 			restrict: "E",
 			transclude: true,
 			templateUrl: "partials/video.html",
+			scope: {
+				title: '@',
+				src: '@'
+			},
+			link: function(scope, element, attrs, ctrl, transclude) {
+				scope.$watch('src', function(newVal)
+				{
+					if (newVal)
+					{
+						scope.src = newVal;
+					}
+				});
+			}
+		};
+	});
+
+	app.directive("youtubeVideoItem", function($sce) {
+		return {
+			restrict: "E",
+			transclude: true,
+			templateUrl: "partials/youtubeVideo.html",
 			scope: {
 				title: '@',
 				code: '@'

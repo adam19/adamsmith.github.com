@@ -226,16 +226,24 @@
 
 		return {
 			scope: {
-				selectedProject: '=',
+				selectedProject: '='
 			},
 			transclude: true,
 			link: function(scope, element, attrs)
 			{
 				scope.isHidden = true;
 
+				element.bind('click', function() {
+					scope.isHidden = true;
+					console.log("projectModal clicked!");
+				});
+
 				scope.$watch('selectedProject', function(newValue, oldValue)
 				{
-					scope.setProjectData(newValue);
+					if (newValue != oldValue)
+					{
+						scope.setProjectData(newValue);
+					}
 				}, true);
 
 				scope.setProjectData = function(projectData) 
@@ -244,6 +252,8 @@
 						return;
 					
 					scope.projectName = projectData.title;
+
+					scope.isHidden = false;
 				};
 			},
 			templateUrl: "partials/modalTemplate.html"

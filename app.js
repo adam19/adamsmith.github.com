@@ -177,9 +177,23 @@
 
 				var addVideo = function(mediaData)
 				{
+					// Start video tag
+					var videoTag = "<video width='100%' controls ";
+
+					// Add poster if it exists
+					if (mediaData.poster != null && mediaData.poster.length > 0)
+					{
+						videoTag += "poster='" + mediaData.poster + "'";
+					}
+					videoTag += ">";
+
+					// Add video source
+					videoTag += "<source src='" + mediaData.src + "' type=\"video/mp4\"></video>";
+
+					// Generate new media element
 					var pElem = "<div><h4>" + mediaData.title + "</h4>\n"
 								+ "<div class='video-container'>\n"
-								+ "<video width='720' height='405' controls><source src='" + mediaData.src + "' type=\"video/mp4\"></video>\n"
+								+ videoTag + "\n"
 								+ "</div></div>";
 					var newScope = scope.$new();
 					var newElement = $compile(pElem)(newScope);

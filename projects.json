@@ -17,13 +17,13 @@
 					"type": "video",
 					"title": "Beauty and the Beast: Perfect Match",
 					"src": "vid/beauty_and_the_beast_perfect_match_official_launch_trailer_1080p.mp4",
-					"poster": ""
+					"poster": "img/posters/beauty_and_the_beast_perfect_match_official_launch_trailer.png"
 				},
 				{
 					"type": "video",
 					"title": "Disney Dream Treats",
 					"src": "vid/disney_dream_treats_1080p.mp4",
-					"poster": ""
+					"poster": "img/posters/disney_dream_treats.png"
 				}
 			],
 			"tags": [
@@ -46,7 +46,7 @@
 					"type": "video",
 					"title": "Raw Data Trailer",
 					"src": "vid/raw_data_official_launch_trailer_1080p.mp4",
-					"poster": ""
+					"poster": "img/posters/raw_data_official_launch_trailer.png"
 				}
 			],
 			"tags": [
@@ -101,13 +101,13 @@
 					"type": "video",
 					"title": "XCom 2 Console Announcement",
 					"src": "vid/xcom2_console_announcement_trailer_1080p.mp4",
-					"poster": ""
+					"poster": "img/posters/xcom2_console_announcement_trailer.png"
 				},
 				{
 					"type": "video",
 					"title": "Saturation-Fire",
 					"src": "vid/xcom2_grenadier_class_skill_tree_breakdown_preview_gameplay_720p.mp4",
-					"poster": "",
+					"poster": "img/posters/xcom2_grenadier_class_skill_tree_breakdown_preview_gameplay.png",
 					"startTime": "285"
 				}
 			],
@@ -179,7 +179,7 @@
 					"type": "video",
 					"title": "Bloom Trailer",
 					"src": "vid/bloom_gameplay_trailer_1080p.mp4",
-					"poster": ""
+					"poster": "img/posters/bloom_gameplay_trailer.png"
 				}
 			],
 			"tags": [

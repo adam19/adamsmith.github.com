@@ -204,7 +204,7 @@
 				{
 					var pElem = "<div><h4>" + mediaData.title + "</h4>\n"
 								+ "<div class='video-container-youtube'>\n"
-								+ "<iframe width='826' width='620' src='https://www.youtube.com/embed/" + mediaData.code + "'></iframe>\n"
+								+ "<iframe width='100%' src='https://www.youtube.com/embed/" + mediaData.code + "'></iframe>\n"
 								+ "</div></div>";
 					var newScope = scope.$new();
 					var newElement = $compile(pElem)(newScope);

@@ -215,14 +215,6 @@
 
 	app.directive("projectModal", function($rootScope, $compile)
 	{
-		// 			// Clicking outside of the modal closes it
-		// 			$(document).on('click', '.Modal-backdrop, .Modal-holder', function() {
-		// 				$state.go('base');
-		// 			});
-		// 			$(document).on('click', '.Modal-box, .Modal-box *', function(e) {
-		// 				e.stopPropagation();
-		// 			});
-
 		return {
 			scope: {
 				selectedProject: '='
@@ -232,29 +224,6 @@
 			link: function(scope, element, attrs)
 			{
 				scope.isHidden = true;
-
-				scope.closeModal = function()
-				{
-					scope.isHidden = true;
-					scope.selectedProject = null;
-
-					var videoElements;
-					
-					// Stop all videos if they're playing
-					videoElements = element.find("video");
-					for(var i=0; i<videoElements.length; i++)
-					{
-						videoElements[i].pause();
-					}
-					
-					// Stop all videos if they're playing
-					videoElements = element.find("iframe");
-					for(var i=0; i<videoElements.length; i++)
-					{
-						//videoElements[i].stopVideo();
-						videoElements[i].contentWindow.postMessage('{ "event":"command","func":"pauseVideo","args":"" }', '*');
-					}
-				}
 
 				scope.$watch('selectedProject', function(newValue, oldValue)
 				{
@@ -272,6 +241,28 @@
 					
 					scope.projectName = projectData.title;
 				};
+
+				scope.closeModal = function()
+				{
+					scope.isHidden = true;
+					scope.selectedProject = null;
+
+					var videoElements;
+					
+					// Stop all videos if they're playing
+					videoElements = element.find("video");
+					for(var i=0; i<videoElements.length; i++)
+					{
+						videoElements[i].pause();
+					}
+					
+					// Stop all YouTube videos if they're playing
+					videoElements = element.find("iframe");
+					for(var i=0; i<videoElements.length; i++)
+					{
+						videoElements[i].contentWindow.postMessage('{ "event":"command","func":"pauseVideo","args":"" }', '*');
+					}
+				}
 			}
 		};
 	})
@@ -308,13 +299,7 @@
 				src: '@'
 			},
 			link: function(scope, element, attrs, ctrl, transclude) {
-				scope.$watch('src', function(newVal)
-				{
-					if (newVal)
-					{
-						scope.src = newVal;
-					}
-				});
+				
 			}
 		};
 	});

@@ -83,7 +83,6 @@
 				descriptionData: "="
 			},
 			link: function(scope, element, attrs, ctrl) {
-				scope.descriptionData = [];
 				scope.descriptionHtml = [];
 				
 				scope.$watch('descriptionData', function(newValue, oldValue)
@@ -204,7 +203,7 @@
 				{
 					var pElem = "<div><h4>" + mediaData.title + "</h4>\n"
 								+ "<div class='video-container-youtube'>\n"
-								+ "<iframe width='100%' src='https://www.youtube.com/embed/" + mediaData.code + "'></iframe>\n"
+								+ "<iframe width='100%' src='https://www.youtube.com/embed/" + mediaData.code + "?enablejsapi=1'></iframe>\n"
 								+ "</div></div>";
 					var newScope = scope.$new();
 					var newElement = $compile(pElem)(newScope);
@@ -229,20 +228,40 @@
 				selectedProject: '='
 			},
 			transclude: true,
+			templateUrl: "partials/modalTemplate.html",
 			link: function(scope, element, attrs)
 			{
 				scope.isHidden = true;
 
-				element.bind('click', function() {
+				scope.closeModal = function()
+				{
 					scope.isHidden = true;
-					console.log("projectModal clicked!");
-				});
+					scope.selectedProject = null;
+
+					var videoElements;
+					
+					// Stop all videos if they're playing
+					videoElements = element.find("video");
+					for(var i=0; i<videoElements.length; i++)
+					{
+						videoElements[i].pause();
+					}
+					
+					// Stop all videos if they're playing
+					videoElements = element.find("iframe");
+					for(var i=0; i<videoElements.length; i++)
+					{
+						//videoElements[i].stopVideo();
+						videoElements[i].contentWindow.postMessage('{ "event":"command","func":"pauseVideo","args":"" }', '*');
+					}
+				}
 
 				scope.$watch('selectedProject', function(newValue, oldValue)
 				{
-					if (newValue != oldValue)
+					if (newValue != undefined)
 					{
 						scope.setProjectData(newValue);
+						scope.isHidden = false;
 					}
 				}, true);
 
@@ -252,11 +271,8 @@
 						return;
 					
 					scope.projectName = projectData.title;
-
-					scope.isHidden = false;
 				};
-			},
-			templateUrl: "partials/modalTemplate.html"
+			}
 		};
 	})
 

@@ -166,9 +166,14 @@
 					}
 				}, true);				
 
+				scope.openGallery = function()
+				{
+
+				}
+
 				var addImage = function(mediaData)
 				{
-					var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "'</image-item>\n";
+					var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "' ng-click=\"openGallery()\"></image-item>\n";
 					var newScope = scope.$new();
 					var newElement = $compile(pElem)(newScope);
 					return element.append(newElement)[0];
@@ -299,7 +304,7 @@
 				src: '@'
 			},
 			link: function(scope, element, attrs, ctrl, transclude) {
-				
+
 			}
 		};
 	});
@@ -336,6 +341,20 @@
 			},
 			link: function(scope) {
 				
+			}
+		};
+	});
+
+	app.directive("imageGallery", function() {
+		return {
+			restrict: "E",
+			transclude: true,
+			templateUrl: "partials/imageGallery.html",
+			scope: {
+				images: '='
+			},
+			link: function(scope, element) {
+
 			}
 		};
 	});

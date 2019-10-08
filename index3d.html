@@ -23,6 +23,21 @@
 
         </div>
 
+		<script type="text/javascript">
+			function httpGetAsync(url, callback)
+			{
+				var xmlHttp = new XMLHttpRequest();
+				xmlHttp.onreadystatechange = function()
+				{
+					if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+					{
+						callback(xmlHttp.responseText);
+					}
+				}
+				xmlHttp.open("GET", url, true);
+				xmlHttp.send(null);
+			}
+		</script>
         <script src="./js/CustomPointerLockControls.js"></script>
         <script src="threejsApp.js" type="module"></script>
     </body>

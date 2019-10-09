@@ -21,7 +21,10 @@ var fbxLoader;
 var controls = {};
 var player = {
     turnSpeed: .001,
-    speed: .1,
+	speed: 1000.0,
+	minSpeed: 1000.0,
+	maxSpeed: 10000.0,
+	accelerationScalar: 1.005,
 	velocity: new THREE.Vector3(),
 	direction: new THREE.Vector3()
 };
@@ -343,22 +346,32 @@ var handleMovement = function()
 	player.direction.x = Number(strafeRight) - Number(strafeLeft);
 	player.direction.normalize();
 
+	// Adjust the player speed
+	// if (moveForward || moveBackward || strafeLeft || strafeRight || moveUp || moveDown)
+	// {
+	// 	player.speed = player.speed * player.accelerationScalar;
+	// }
+	// else
+	// {
+	// 	player.speed = player.minSpeed;
+	// }
+
 	if (moveForward || moveBackward)
 	{
-		player.velocity.z += player.direction.z * 300.0 * delta;
+		player.velocity.z += player.direction.z * player.speed * delta;
 	}
 	if (strafeLeft || strafeRight)
 	{
-		player.velocity.x -= player.direction.x * 300.0 * delta;
+		player.velocity.x -= player.direction.x * player.speed * delta;
 	}
 	if (moveUp || moveDown)
 	{
-		player.velocity.y += player.direction.y * 300.0 * delta;
+		player.velocity.y += player.direction.y * player.speed * delta;
 	}
 
-	if (player.velocity.length() > 300.0)
+	if (player.velocity.length() > player.speed)
 	{
-		player.velocity = player.velocity.normalize() * 300.0;
+		player.velocity = player.velocity.normalize() * player.speed;
 	}
 
 	controls.moveRight(-player.velocity.x * delta);

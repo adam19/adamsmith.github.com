@@ -127,7 +127,7 @@ var init = function()
 				meshList[newMesh.id] = newMesh;
 			}
 
-			for (var i=0; meshData.meshInstanceList.length; i++)
+			for (var i=0; i<meshData.meshInstanceList.length; i++)
 			{
 				var inst = meshData.meshInstanceList[i];
 				var newInst = {
@@ -143,8 +143,19 @@ var init = function()
 					inst.xform.up,
 					inst.xform.forward
 				);
-				newInst.xform.setPosition(newInst.xform.position);
+				newInst.xform.setPosition(inst.xform.position);
 
+				newInst.sceneRef = new THREE.Mesh(
+					meshList[newInst.meshId].geometry, 
+					new THREE.MeshBasicMaterial(
+						{
+							color: "0xffffff",
+							side: THREE.DoubleSide,
+							vertexColors: THREE.VertexColors,
+							wireframe: true
+						})
+					);
+				scene.add(newInst.sceneRef);
 				
 				meshInstanceList[newInst.meshId] = newInst;
 			}
@@ -182,10 +193,6 @@ var init = function()
 	indices.push(0, 1, 2);
 	indices.push(0, 2, 3);
 
-	function disposeArray()
-	{
-		this.array = null;
-	}
 
 	geometry.setIndex(indices);
 	geometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3).onUpload(disposeArray));
@@ -193,13 +200,17 @@ var init = function()
 	geometry.addAttribute('color', new THREE.Float32BufferAttribute(colors, 3).onUpload(disposeArray));
 	geometry.computeBoundingSphere();
 
-	console.log("New mesh radius = " + geometry.boundingSphere.radius);
-
-	var customMat = new THREE.MeshPhongMaterial(
-	{
-		side: THREE.DoubleSide,
-		vertexColors: THREE.VertexColors
-	});
+	// var customMat = new THREE.MeshPhongMaterial(
+	// {
+	// 	side: THREE.DoubleSide,
+	// 	vertexColors: THREE.VertexColors
+	// });
+	var customMat = new THREE.MeshBasicMaterial(
+		{
+			side: THREE.DoubleSide,
+			vertexColors: THREE.VertexColors,
+			wireframe: true
+		});
 
 	mesh = new THREE.Mesh(geometry, customMat);
 	scene.add(mesh);
@@ -228,37 +239,65 @@ var init = function()
     container.appendChild(renderer.domElement);
 }
 
+function disposeArray()
+{
+	this.array = null;
+}
 var loadMesh = function(data, meshOutput)
 {
 	meshOutput.name = data.name;
 	meshOutput.id = data.id;
 
+	// Vertices
 	meshOutput.verts = [];
 	for (var v=0; v<data.verts.length; v++)
 	{
 		meshOutput.verts.push(data.verts[v].x, data.verts[v].y, data.verts[v].z);
 	}
 	
+	// Vertex Indices
 	meshOutput.indices = [];
 	meshOutput.indices.push(data.indices);
 	
+	// Vertex Normals
 	meshOutput.vertNormals = [];
 	for (var v=0; v<data.vertNormals.length; v++)
 	{
 		meshOutput.vertNormals.push(data.vertNormals[v].x, data.vertNormals[v].y, data.vertNormals[v].z);
 	}
 	
+	// Vertex Colors
 	meshOutput.vertColors = [];
-	for (var v=0; v<data.vertColors.length; v++)
+	if (data.vertColors.length == data.verts.length)
 	{
-		meshOutput.vertColors.push(data.vertColors[v].x, data.vertColors[v].y, data.vertColors[v].z);
+		for (var v=0; v<data.verts.length; v++)
+		{
+			meshOutput.vertColors.push(data.vertColors[v].x, data.vertColors[v].y, data.vertColors[v].z);
+		}
+	}
+	else
+	{
+		// Just default to white vertex colors
+		for (var v=0; v<data.verts.length; v++)
+		{
+			meshOutput.vertColors.push(1.0, 1.0, 1.0);
+		}
 	}
 	
+	// Texture Coordinates
 	meshOutput.uvs0 = [];
 	for (var v=0; v<data.uvs0.length; v++)
 	{
-		meshOutput.uvs0.push(data.uvs0[v].x, data.uvs0[v].y, data.uvs0[v].z);
+		meshOutput.uvs0.push(data.uvs0[v].x, data.uvs0[v].y);
 	}
+
+	// Construct the geometry
+	meshOutput.geometry = new THREE.BufferGeometry();
+	meshOutput.geometry.setIndex(meshOutput.indices);
+	meshOutput.geometry.addAttribute('position', new THREE.Float32BufferAttribute(meshOutput.verts, 3).onUpload(disposeArray));
+	meshOutput.geometry.addAttribute('normal', new THREE.Float32BufferAttribute(meshOutput.vertNormals, 3).onUpload(disposeArray));
+	meshOutput.geometry.addAttribute('color', new THREE.Float32BufferAttribute(meshOutput.vertColors, 2).onUpload(disposeArray));
+	meshOutput.geometry.computeBoundingSphere();
 }
 
 var processInput = function()

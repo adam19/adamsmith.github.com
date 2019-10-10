@@ -21,8 +21,7 @@ var fbxLoader;
 var controls = {};
 var player = {
     turnSpeed: .001,
-	speed: 1000.0,
-	minSpeed: 1000.0,
+	speed: 500.0,
 	maxSpeed: 10000.0,
 	accelerationScalar: 1.005,
 	velocity: new THREE.Vector3(),
@@ -46,6 +45,8 @@ var cube;
 var cubeTexture;
 var cubeMaterial;
 
+var sceneScale = 1;
+
 var init = function()
 {
     container = document.querySelector("#scene-container");
@@ -61,13 +62,13 @@ var init = function()
     const far = 10000;
     
     camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-	camera.position.set(100, 50, 100);
+	camera.position.set(10, 5, 10);
 	camera.lookAt(0, 0, 0);
 
 	initControls(container);
 
+	initGrid(-5, 5, 1);
 	initGrid(-5, 5, 10);
-	initGrid(-5, 5, 100);
 
 
 	// var meshPath = './scene/meshes/rock_b.fbx';
@@ -107,14 +108,14 @@ var init = function()
 		{
 			console.log("Success!");
 
-			var meshData = JSON.parse(data);
+			var sceneData = JSON.parse(data);
 
-			console.log("Num Meshes = " + meshData.meshDataList.length);
-			console.log("Num Mesh Instances = " + meshData.meshInstanceList.length);
-			console.log("Num Cameras = " + meshData.cameraList.length);
-			console.log("Num Lights = " + meshData.lightList.length);
-			console.log("Num Textures = " + meshData.textureAssetList.length);
-			console.log("Num Other Items = " + meshData.otherItemsList.length);
+			console.log("Num Meshes = " + sceneData.meshDataList.length);
+			console.log("Num Mesh Instances = " + sceneData.meshInstanceList.length);
+			console.log("Num Cameras = " + sceneData.cameraList.length);
+			console.log("Num Lights = " + sceneData.lightList.length);
+			console.log("Num Textures = " + sceneData.textureAssetList.length);
+			console.log("Num Other Items = " + sceneData.otherItemsList.length);
 
 			var meshList = [];
 			var meshInstanceList = [];
@@ -123,16 +124,31 @@ var init = function()
 			var textureList = [];
 			var otherItemsList = [];
 
-			for (var i=0; i<meshData.meshDataList.length; i++)
+			var meshPos = {x: 0, y: 10, z: 0};
+			for (var i=0; i<sceneData.meshDataList.length; i++)
 			{
-				var newMesh = {};
-				loadMesh(meshData.meshDataList[i], newMesh);
-				meshList[newMesh.id] = newMesh;
+				var meshData = {};
+				loadMesh(sceneData.meshDataList[i], meshData);
+				meshList[meshData.id] = meshData;
+
+				var newMesh = new THREE.Mesh(
+					meshData.geometry, 
+					new THREE.MeshBasicMaterial(
+						{
+							color: 0x000,
+							wireframe: true
+						})
+					);
+
+				meshPos.x += 10;
+				newMesh.position.set(meshPos.x, meshPos.y, meshPos.z);
+
+				scene.add(newMesh);
 			}
 
-			for (var i=0; i<meshData.meshInstanceList.length; i++)
+			for (var i=0; i<sceneData.meshInstanceList.length; i++)
 			{
-				var inst = meshData.meshInstanceList[i];
+				var inst = sceneData.meshInstanceList[i];
 				var newInst = {
 					name: inst.name,
 					tag: inst.tag,
@@ -146,19 +162,31 @@ var init = function()
 					inst.xform.up,
 					inst.xform.forward
 				);
-				newInst.xform.setPosition(inst.xform.position);
+				newInst.xform.setPosition(inst.xform.position * sceneScale);
 
 				newInst.sceneRef = new THREE.Mesh(
 					meshList[newInst.meshId].geometry, 
 					new THREE.MeshBasicMaterial(
 						{
-							color: "0xffffff",
-							side: THREE.DoubleSide,
-							vertexColors: THREE.VertexColors,
+							color: 0x000,
+							// color: 0xffffff,
+							// side: THREE.DoubleSide,
+							// vertexColors: THREE.VertexColors,
 							wireframe: true
 						})
 					);
-				scene.add(newInst.sceneRef);
+				newInst.sceneRef.position.set(inst.xform.position.x, inst.xform.position.y, inst.xform.position.z);
+				// scene.add(newInst.sceneRef);
+
+				var boxSize = new THREE.Vector3();
+				meshList[newInst.meshId].geometry.boundingBox.getSize(boxSize);
+				var boxMesh = new THREE.Mesh(
+					new THREE.BoxGeometry(boxSize.x, boxSize.y, boxSize.z),
+					new THREE.MeshBasicMaterial({color:0x000, wireframe: true}));
+				boxMesh.position.set(inst.xform.position.x, inst.xform.position.y, inst.xform.position.z);
+				// scene.add(boxMesh);
+
+				console.log("Pos[" + inst.xform.position.x + ", " + inst.xform.position.y + ", " + inst.xform.position.z + "] [" + boxSize.x + ", " + boxSize.y + ", " + boxSize.z + "]");
 				
 				meshInstanceList[newInst.meshId] = newInst;
 			}
@@ -170,37 +198,42 @@ var init = function()
 	// *** MOVE THIS TO LOADMODEL() FUNCTION ***
 	var mesh;
 	var geometry = new THREE.BufferGeometry();
-	var positions = [];
-	var indices = [];
-	var normals = [];
+	var positions = [0.43622398376464846, -0.19999998807907105, -0.09186500310897827, 0.3182329833507538, 0.8713930249214172, -0.07845299690961838, 0.09272400289773941, 0.7124689221382141, 0.36972400546073916, -0.41748297214508059, 0.27617397904396059, -0.3247329890727997, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, -0.4547869861125946, -0.20000001788139344, -0.3599330186843872, 0.16333800554275514, -0.19999998807907105, 0.45219600200653078, 0.09272400289773941, 0.7124689221382141, 0.36972400546073916, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, 0.43622398376464846, -0.19999998807907105, -0.09186500310897827, 0.28380098938941958, -0.19999998807907105, -0.296550989151001, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, -0.3621709644794464, 0.26649799942970278, -0.07406900078058243, -0.11200699210166931, 0.5691570043563843, -0.2532989978790283, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, 0.09272400289773941, 0.7124689221382141, 0.36972400546073916, 0.3182329833507538, 0.8713930249214172, -0.07845299690961838, 0.16333800554275514, -0.19999998807907105, 0.45219600200653078, 0.43622398376464846, -0.19999998807907105, -0.09186500310897827, 0.09272400289773941, 0.7124689221382141, 0.36972400546073916, -0.33065903186798098, -0.19999998807907105, 0.29423898458480837, 0.16333800554275514, -0.19999998807907105, 0.45219600200653078, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, 0.3182329833507538, 0.8713930249214172, -0.07845299690961838, 0.43622398376464846, -0.19999998807907105, -0.09186500310897827, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, -0.4547869861125946, -0.20000001788139344, -0.3599330186843872, -0.33065903186798098, -0.19999998807907105, 0.29423898458480837, -0.41748297214508059, 0.27617397904396059, -0.3247329890727997, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, 0.3182329833507538, 0.8713930249214172, -0.07845299690961838, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, -0.11200699210166931, 0.5691570043563843, -0.2532989978790283, -0.3786419630050659, 0.5216950178146362, -0.07245299965143204, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, -0.3786419630050659, 0.5216950178146362, -0.07245299965143204, -0.33065903186798098, -0.19999998807907105, 0.29423898458480837, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, 0.28380098938941958, -0.19999998807907105, -0.296550989151001, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, -0.11200699210166931, 0.5691570043563843, -0.2532989978790283, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, -0.33065903186798098, -0.19999998807907105, 0.29423898458480837, -0.3621709644794464, 0.26649799942970278, -0.07406900078058243, -0.41748297214508059, 0.27617397904396059, -0.3247329890727997, -0.3621709644794464, 0.26649799942970278, -0.07406900078058243, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, -0.41748297214508059, 0.27617397904396059, -0.3247329890727997, -0.11200699210166931, 0.5691570043563843, -0.2532989978790283, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, -0.3786419630050659, 0.5216950178146362, -0.07245299965143204, -0.11200699210166931, 0.5691570043563843, -0.2532989978790283, -0.3621709644794464, 0.26649799942970278, -0.07406900078058243, -0.4547869861125946, -0.20000001788139344, -0.3599330186843872, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, 0.28380098938941958, -0.19999998807907105, -0.296550989151001, -0.3786419630050659, 0.5216950178146362, -0.07245299965143204, -0.3621709644794464, 0.26649799942970278, -0.07406900078058243, -0.33065903186798098, -0.19999998807907105, 0.29423898458480837];
+	var indices = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62];
+	var normals = [0.8763512969017029, 0.09058903902769089, 0.4730771481990814,0.8763512969017029, 0.09058903902769089, 0.4730771481990814,0.8763512969017029, 0.09058903902769089, 0.4730771481990814,-0.13399899005889893, 0.08349400013685227, -0.9874579310417175,-0.13399899005889893, 0.08349400013685227, -0.9874579310417175,-0.13399899005889893, 0.08349400013685227, -0.9874579310417175,-0.3407970070838928, 0.05843499302864075, 0.9383190274238586,-0.3407970070838928, 0.05843499302864075, 0.9383190274238586,-0.3407970070838928, 0.05843499302864075, 0.9383190274238586,0.7999498248100281, 0.07227098196744919, -0.595698893070221,0.7999498248100281, 0.07227098196744919, -0.595698893070221,0.7999498248100281, 0.07227098196744919, -0.595698893070221,-0.7428157329559326, 0.24501992762088777, -0.6230489015579224,-0.7428157329559326, 0.24501992762088777, -0.6230489015579224,-0.7428157329559326, 0.24501992762088777, -0.6230489015579224,-0.24943795800209046, 0.9454059600830078, 0.2097339630126953,-0.24943795800209046, 0.9454059600830078, 0.2097339630126953,-0.24943795800209046, 0.9454059600830078, 0.2097339630126953,0.888534426689148, 0.1090429276227951, 0.4456636905670166,0.888534426689148, 0.1090429276227951, 0.4456636905670166,0.888534426689148, 0.1090429276227951, 0.4456636905670166,-0.3035810887813568, 0.08021103590726853, 0.9494234323501587,-0.3035810887813568, 0.08021103590726853, 0.9494234323501587,-0.3035810887813568, 0.08021103590726853, 0.9494234323501587,0.8689038753509522, 0.10175498574972153, -0.48440900444984438,0.8689038753509522, 0.10175498574972153, -0.48440900444984438,0.8689038753509522, 0.10175498574972153, -0.48440900444984438,-0.9805144667625427, 0.06306102871894837, 0.18605008721351624,-0.9805144667625427, 0.06306102871894837, 0.18605008721351624,-0.9805144667625427, 0.06306102871894837, 0.18605008721351624,-0.3183201253414154, 0.9443383812904358, 0.08305003494024277,-0.3183201253414154, 0.9443383812904358, 0.08305003494024277,-0.3183201253414154, 0.9443383812904358, 0.08305003494024277,-0.3277939260005951, 0.9127659201622009, -0.243740975856781,-0.3277939260005951, 0.9127659201622009, -0.243740975856781,-0.3277939260005951, 0.9127659201622009, -0.243740975856781,-0.9507812261581421, 0.08777803182601929, 0.29717010259628298,-0.9507812261581421, 0.08777803182601929, 0.29717010259628298,-0.9507812261581421, 0.08777803182601929, 0.29717010259628298,0.25281408429145815, 0.062419019639492038, -0.9654993414878845,0.25281408429145815, 0.062419019639492038, -0.9654993414878845,0.25281408429145815, 0.062419019639492038, -0.9654993414878845,-0.6076409220695496, 0.7334520220756531, -0.3046649992465973,-0.6076409220695496, 0.7334520220756531, -0.3046649992465973,-0.6076409220695496, 0.7334520220756531, -0.3046649992465973,-0.97005695104599, 0.10672400146722794, 0.21817299723625184,-0.97005695104599, 0.10672400146722794, 0.21817299723625184,-0.97005695104599, 0.10672400146722794, 0.21817299723625184,-0.1253119856119156, 0.9899289011955261, 0.06586198508739472,-0.1253119856119156, 0.9899289011955261, 0.06586198508739472,-0.1253119856119156, 0.9899289011955261, 0.06586198508739472,-0.2899899482727051, 0.37694889307022097, -0.8796676993370056,-0.2899899482727051, 0.37694889307022097, -0.8796676993370056,-0.2899899482727051, 0.37694889307022097, -0.8796676993370056,-0.5573041439056397, -0.030715005472302438, -0.8297401070594788,-0.5573041439056397, -0.030715005472302438, -0.8297401070594788,-0.5573041439056397, -0.030715005472302438, -0.8297401070594788,0.08531703054904938, -0.06580502539873123, -0.9941784143447876,0.08531703054904938, -0.06580502539873123, -0.9941784143447876,0.08531703054904938, -0.06580502539873123, -0.9941784143447876,-0.9979149699211121, -0.06443200260400772, 0.003771000076085329,-0.9979149699211121, -0.06443200260400772, 0.003771000076085329,-0.9979149699211121, -0.06443200260400772, 0.003771000076085329];
 	var colors = [];
 
-	positions.push(-10, -10, 0);
-	positions.push( 10, -10, 0);
-	positions.push( 10,  10, 0);
-	positions.push(-10,  10, 0);
+	for(var i=0; i<positions.length; i++)
+	{
+		positions[i] = positions[i] * sceneScale;
+	}
 
-	normals.push(0, 0, 1);
-	normals.push(0, 0, 1);
-	normals.push(0, 0, 1);
-	normals.push(0, 0, 1);
+	// positions.push(-10, -10, 0);
+	// positions.push( 10, -10, 0);
+	// positions.push( 10,  10, 0);
+	// positions.push(-10,  10, 0);
 
-	// colors.push(1, 0.25, 0.25);
-	// colors.push(0.25, 1, 0.25);
-	// colors.push(0.25, 0.25, 1);
-	colors.push(1, 0.0, 0.0);
-	colors.push(0.0, 1, 0.0);
-	colors.push(0.0, 0.0, 1);
-	colors.push(1, 1, 1);
+	// normals.push(0, 0, 1);
+	// normals.push(0, 0, 1);
+	// normals.push(0, 0, 1);
+	// normals.push(0, 0, 1);
 
-	indices.push(0, 1, 2);
-	indices.push(0, 2, 3);
+	// // colors.push(1, 0.25, 0.25);
+	// // colors.push(0.25, 1, 0.25);
+	// // colors.push(0.25, 0.25, 1);
+	// colors.push(1, 0.0, 0.0);
+	// colors.push(0.0, 1, 0.0);
+	// colors.push(0.0, 0.0, 1);
+	// colors.push(1, 1, 1);
+
+	// indices.push(0, 1, 2);
+	// indices.push(0, 2, 3);
 
 
 	geometry.setIndex(indices);
 	geometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3).onUpload(disposeArray));
 	geometry.addAttribute('normal', new THREE.Float32BufferAttribute(normals, 3).onUpload(disposeArray));
-	geometry.addAttribute('color', new THREE.Float32BufferAttribute(colors, 3).onUpload(disposeArray));
+	// geometry.addAttribute('color', new THREE.Float32BufferAttribute(colors, 3).onUpload(disposeArray));
 	geometry.computeBoundingSphere();
 
 	// var customMat = new THREE.MeshPhongMaterial(
@@ -215,10 +248,21 @@ var init = function()
 			wireframe: true
 		});
 
-	mesh = new THREE.Mesh(geometry, customMat);
+	mesh = new THREE.Mesh(
+		geometry, 
+		new THREE.MeshBasicMaterial({color:0x000, wireframe: true}));
 	scene.add(mesh);
 	//////////////////////////////////////////////////////////////////////////////////
 
+
+	var testCubeGeo = new THREE.BoxGeometry(15, 15, 15);
+	var lineMat = new THREE.MeshBasicMaterial({
+		wireframe: true,
+		color: 0x000
+	});
+	var testCubeMesh = new THREE.Mesh(testCubeGeo, lineMat);
+	testCubeMesh.position.set(0, 20, 0);
+	scene.add(testCubeMesh);
 
 
     const light = new THREE.DirectionalLight(0xffffff, 5.0)
@@ -255,7 +299,7 @@ var loadMesh = function(data, meshOutput)
 	meshOutput.verts = [];
 	for (var v=0; v<data.verts.length; v++)
 	{
-		meshOutput.verts.push(data.verts[v].x, data.verts[v].y, data.verts[v].z);
+		meshOutput.verts.push(data.verts[v].x * sceneScale, data.verts[v].y * sceneScale, data.verts[v].z * sceneScale);
 	}
 	
 	// Vertex Indices
@@ -270,20 +314,12 @@ var loadMesh = function(data, meshOutput)
 	}
 	
 	// Vertex Colors
-	meshOutput.vertColors = [];
 	if (data.vertColors.length == data.verts.length)
 	{
+		meshOutput.vertColors = [];
 		for (var v=0; v<data.verts.length; v++)
 		{
 			meshOutput.vertColors.push(data.vertColors[v].x, data.vertColors[v].y, data.vertColors[v].z);
-		}
-	}
-	else
-	{
-		// Just default to white vertex colors
-		for (var v=0; v<data.verts.length; v++)
-		{
-			meshOutput.vertColors.push(1.0, 1.0, 1.0);
 		}
 	}
 	
@@ -299,8 +335,14 @@ var loadMesh = function(data, meshOutput)
 	meshOutput.geometry.setIndex(meshOutput.indices);
 	meshOutput.geometry.addAttribute('position', new THREE.Float32BufferAttribute(meshOutput.verts, 3).onUpload(disposeArray));
 	meshOutput.geometry.addAttribute('normal', new THREE.Float32BufferAttribute(meshOutput.vertNormals, 3).onUpload(disposeArray));
-	meshOutput.geometry.addAttribute('color', new THREE.Float32BufferAttribute(meshOutput.vertColors, 2).onUpload(disposeArray));
+	
+	if (meshOutput.vertColors != null && meshOutput.vertColors.length > 0)
+	{
+		meshOutput.geometry.addAttribute('color', new THREE.Float32BufferAttribute(meshOutput.vertColors, 3).onUpload(disposeArray));
+	}
+
 	meshOutput.geometry.computeBoundingSphere();
+	meshOutput.geometry.computeBoundingBox();
 }
 
 var processInput = function()

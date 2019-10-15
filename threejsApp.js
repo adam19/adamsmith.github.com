@@ -45,8 +45,6 @@ var cube;
 var cubeTexture;
 var cubeMaterial;
 
-var sceneScale = 1;
-
 var init = function()
 {
     container = document.querySelector("#scene-container");
@@ -69,18 +67,6 @@ var init = function()
 
 	initGrid(-5, 5, 1);
 	initGrid(-5, 5, 10);
-
-
-	// var meshPath = './scene/meshes/rock_b.fbx';
-	// var meshPath = './scene/meshes/dancing.fbx';
-	// var meshPath = './scene/meshes/Palm_Tree.fbx';
-	// loadModel(meshPath, function(object) {
-	// 	console.log("Loaded model '" + meshPath + "'");
-
-	// 	//object.scale = new Vector3(0.1, 0.1, 0.1);
-	// 	scene.add(object);
-	// });
-
     
     const geom = new THREE.BoxBufferGeometry(10, 10, 10);
     //const mat = new THREE.MeshBasicMaterial();
@@ -103,7 +89,9 @@ var init = function()
 	// scene.add(cube);
 
 	// custom mesh loader ////////////////////////////////////
-	httpGetAsync("./scene/ExportManifest.json", function (data) {
+	// var scenePath = "./scene/CubeScene/ExportManifest.json";
+	var scenePath = "./scene/CaveScene/ExportManifest.json";
+	httpGetAsync(scenePath, function (data) {
 		if (data)
 		{
 			console.log("Success!");
@@ -117,142 +105,6 @@ var init = function()
 			console.log("Num Textures = " + sceneData.textureAssetList.length);
 			console.log("Num Other Items = " + sceneData.otherItemsList.length);
 
-			sceneData = {
-				meshDataList: [
-					{
-						name: "TEST",
-						id: 0,
-						verts: [
-							{ x: 0.5, y: -0.5, z: 0.5},
-							{ x: -0.5, y: -0.5, z: 0.5 },
-							{ x: 0.5, y: 0.5, z: 0.5 },
-							{ x: -0.5, y: 0.5, z: 0.5 },
-							{ x: 0.5, y: 0.5, z: -0.5 },
-							{ x: -0.5, y: 0.5, z: -0.5 },
-							{ x: 0.5, y: -0.5, z: -0.5 },
-							{ x: -0.5, y: -0.5, z: -0.5 },
-							{ x: 0.5, y: 0.5, z: 0.5 },
-							{ x: -0.5, y: 0.5, z: 0.5 },
-							{ x: 0.5, y: 0.5, z: -0.5 },
-							{ x: -0.5, y: 0.5, z: -0.5 },
-							{ x: 0.5, y: -0.5, z: -0.5 },
-							{ x: 0.5, y: -0.5, z: 0.5 },
-							{ x: -0.5, y: -0.5, z: 0.5 },
-							{ x: -0.5, y: -0.5, z: -0.5 },
-							{ x: -0.5, y: -0.5, z: 0.5 },
-							{ x: -0.5, y: 0.5, z: 0.5 },
-							{ x: -0.5, y: 0.5, z: -0.5 },
-							{ x: -0.5, y: -0.5, z: -0.5 },
-							{ x: 0.5, y: -0.5, z: -0.5 },
-							{ x: 0.5, y: 0.5, z: -0.5 },
-							{ x: 0.5, y: 0.5, z: 0.5 },
-							{ x: 0.5, y: -0.5, z: 0.5 }
-						],
-						indices: [
-							0, 2, 3, 0, 3, 1, 8, 4, 5, 8, 5, 9, 10, 6, 7, 10, 7, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23
-						],
-						vertNormals: [
-							{ x: 0.0, y: 0.0, z: 1.0 },
-							{ x: 0.0, y: 0.0, z: 1.0 },
-							{ x: 0.0, y: 0.0, z: 1.0 },
-							{ x: 0.0, y: 0.0, z: 1.0 },
-							{ x: 0.0, y: 1.0, z: 0.0 },
-							{ x: 0.0, y: 1.0, z: 0.0 },
-							{ x: 0.0, y: 0.0, z: -1.0 },
-							{ x: 0.0, y: 0.0, z: -1.0 },
-							{ x: 0.0, y: 1.0, z: 0.0 },
-							{ x: 0.0, y: 1.0, z: 0.0 },
-							{ x: 0.0, y: 0.0, z: -1.0 },
-							{ x: 0.0, y: 0.0, z: -1.0 },
-							{ x: 0.0, y: -1.0, z: 0.0 },
-							{ x: 0.0, y: -1.0, z: 0.0 },
-							{ x: 0.0, y: -1.0, z: 0.0 },
-							{ x: 0.0, y: -1.0, z: 0.0 },
-							{ x: -1.0, y: 0.0, z: 0.0 },
-							{ x: -1.0, y: 0.0, z: 0.0 },
-							{ x: -1.0, y: 0.0, z: 0.0 },
-							{ x: -1.0, y: 0.0, z: 0.0 },
-							{ x: 1.0, y: 0.0, z: 0.0 },
-							{ x: 1.0, y: 0.0, z: 0.0 },
-							{ x: 1.0, y: 0.0, z: 0.0 },
-							{ x: 1.0, y: 0.0, z: 0.0 }
-						],
-						vertColors: [],
-						uvs0: [
-							{ x: 0.0, y: 0.0 },
-							{ x: 1.0, y: 0.0 },
-							{ x: 0.0, y: 1.0 },
-							{ x: 1.0, y: 1.0 },
-							{ x: 0.0, y: 1.0 },
-							{ x: 1.0, y: 1.0 },
-							{ x: 0.0, y: 1.0 },
-							{ x: 1.0, y: 1.0 },
-							{ x: 0.0, y: 0.0 },
-							{ x: 1.0, y: 0.0 },
-							{ x: 0.0, y: 0.0 },
-							{ x: 1.0, y: 0.0 },
-							{ x: 0.0, y: 0.0 },
-							{ x: 0.0, y: 1.0 },
-							{ x: 1.0, y: 1.0 },
-							{ x: 1.0, y: 0.0 },
-							{ x: 0.0, y: 0.0 },
-							{ x: 0.0, y: 1.0 },
-							{ x: 1.0, y: 1.0 },
-							{ x: 1.0, y: 0.0 },
-							{ x: 0.0, y: 0.0 },
-							{ x: 0.0, y: 1.0 },
-							{ x: 1.0, y: 1.0 },
-							{ x: 1.0, y: 0.0 }
-						],
-						uvs1: [
-							{ x: 0.6909865140914917, y: 0.3471643924713135 },
-							{ x: 0.9966580867767334, y: 0.3471643924713135 },
-							{ x: 0.6909865140914917, y: 0.6528358459472656 },
-							{ x: 0.9966580867767334, y: 0.6528358459472656 },
-							{ x: 0.3097273111343384, y: 0.34716424345970156 },
-							{ x: 0.004055766388773918, y: 0.34716424345970156 },
-							{ x: 0.34716424345970156, y: 0.6528358459472656 },
-							{ x: 0.6528358459472656, y: 0.6528358459472656 },
-							{ x: 0.3097273111343384, y: 0.6528358459472656 },
-							{ x: 0.004055766388773918, y: 0.6528358459472656 },
-							{ x: 0.34716424345970156, y: 0.34716424345970156 },
-							{ x: 0.6528358459472656, y: 0.34716424345970156 },
-							{ x: 0.34716424345970156, y: 0.004055766388773918 },
-							{ x: 0.34716424345970156, y: 0.3097273111343384 },
-							{ x: 0.6528358459472656, y: 0.3097273111343384 },
-							{ x: 0.6528358459472656, y: 0.004055766388773918 },
-							{ x: 0.6902728080749512, y: 0.3097273111343384 },
-							{ x: 0.9959442615509033, y: 0.3097273111343384 },
-							{ x: 0.9959442615509033, y: 0.004055766388773918 },
-							{ x: 0.6902728080749512, y: 0.004055766388773918 },
-							{ x: 0.3097273111343384, y: 0.004055766388773918 },
-							{ x: 0.004055766388773918, y: 0.004055766388773918 },
-							{ x: 0.004055766388773918, y: 0.3097273111343384 },
-							{ x: 0.3097273111343384, y: 0.3097273111343384 }
-						]
-					}
-				],
-				meshInstanceList: [
-					{
-						xform: {
-							right: { x: 1.0, y: 0.0, z: 0.0 },
-							up: { x: 0.0, y: 1.0, z: 0.0 },
-							forward: { x: 0.0, y: 0.0, z: 1.0 },
-							position: { x: 0.0, y: 0.0, z: 0.0 }
-						},
-						name: "Cube",
-						tag: "Untagged",
-						meshId: 0,
-						textureId: 0
-					}
-				],
-				cameraList: [],
-				lightList: [],
-				meshAssetList: [],
-				textureAssetList: [],
-				otherItemsList: []
-			};
-
 			var meshList = [];
 			var meshInstanceList = [];
 			var cameraList = [];
@@ -262,90 +114,11 @@ var init = function()
 
 			for (var i=0; i<sceneData.meshDataList.length; i++)
 			{
-				// var meshData = {};
-				// loadMesh(sceneData.meshDataList[i], meshData);
-				// meshList[meshData.id] = meshData;
-
-				// var newMesh = new THREE.Mesh(
-				// 	meshData.geometry,
-				// 	new THREE.MeshBasicMaterial(
-				// 		{
-				// 			color: 0x000,
-				// 			wireframe: true
-				// 		})
-				// 	);
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////
-				var data = sceneData.meshDataList[i];
-				var meshOutput = {};
-				meshOutput.name = data.name;
-				meshOutput.id = data.id;
-			
-				// Vertices
-				meshOutput.verts = [];
-				for (var v=0; v<data.verts.length; v++)
-				{
-					meshOutput.verts.push(data.verts[v].x * sceneScale, data.verts[v].y * sceneScale, data.verts[v].z * sceneScale);
-				}
-				
-				// Vertex Indices
-				meshOutput.indices = [];
-				meshOutput.indices.push(data.indices);
-				
-				// Vertex Normals
-				meshOutput.vertNormals = [];
-				for (var v=0; v<data.vertNormals.length; v++)
-				{
-					meshOutput.vertNormals.push(data.vertNormals[v].x, data.vertNormals[v].y, data.vertNormals[v].z);
-				}
-				
-				// Vertex Colors
-				if (data.vertColors.length == data.verts.length)
-				{
-					meshOutput.vertColors = [];
-					for (var v=0; v<data.verts.length; v++)
-					{
-						meshOutput.vertColors.push(data.vertColors[v].x, data.vertColors[v].y, data.vertColors[v].z);
-					}
-				}
-				
-				// Texture Coordinates
-				meshOutput.uvs0 = [];
-				for (var v=0; v<data.uvs0.length; v++)
-				{
-					meshOutput.uvs0.push(data.uvs0[v].x, data.uvs0[v].y);
-				}
-			
-				// Construct the geometry
-				meshOutput.geometry = new THREE.BufferGeometry();
-				meshOutput.geometry.setIndex(meshOutput.indices);
-				meshOutput.geometry.addAttribute('position', new THREE.Float32BufferAttribute(meshOutput.verts, 3).onUpload(disposeArray));
-				meshOutput.geometry.addAttribute('normal', new THREE.Float32BufferAttribute(meshOutput.vertNormals, 3).onUpload(disposeArray));
-				
-				if (meshOutput.vertColors != null && meshOutput.vertColors.length > 0)
-				{
-					meshOutput.geometry.addAttribute('color', new THREE.Float32BufferAttribute(meshOutput.vertColors, 3).onUpload(disposeArray));
-				}
-			
-				meshOutput.geometry.computeBoundingSphere();
-				meshOutput.geometry.computeBoundingBox();
-				
-				meshList[meshOutput.id] = meshOutput;
-/////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
+				var meshData = loadGeometry(sceneData.meshDataList[i]);
+				meshList[meshData.id] = meshData;
 
 				var newMesh = new THREE.Mesh(
-					meshOutput.geometry,
+					meshData.geometry,
 					new THREE.MeshBasicMaterial(
 						{
 							color: 0x000,
@@ -354,7 +127,6 @@ var init = function()
 					);
 
 				newMesh.name = "loaded " + sceneData.meshDataList[i].name;
-				sceneRoot.add(newMesh);
 			}
 
 			for (var i=0; i<sceneData.meshInstanceList.length; i++)
@@ -364,7 +136,8 @@ var init = function()
 					name: inst.name,
 					tag: inst.tag,
 					meshId: inst.meshId,
-					textureId: inst.textureId
+					textureId: inst.textureId,
+					scale: inst.scale
 				};
 
 				newInst.xform = new THREE.Matrix4();
@@ -373,7 +146,7 @@ var init = function()
 					inst.xform.up,
 					inst.xform.forward
 				);
-				newInst.xform.setPosition(inst.xform.position * sceneScale);
+				newInst.xform.setPosition(inst.xform.position.x, inst.xform.position.y, inst.xform.position.z);
 
 				newInst.sceneRef = new THREE.Mesh(
 					meshList[newInst.meshId].geometry, 
@@ -386,77 +159,19 @@ var init = function()
 							wireframe: true
 						})
 					);
-				newInst.sceneRef.position.set(inst.xform.position.x, inst.xform.position.y, inst.xform.position.z);
+
+				// Set transform
+				newInst.sceneRef.position.setFromMatrixPosition(newInst.xform);
+				newInst.sceneRef.quaternion.setFromRotationMatrix(newInst.xform);
+				newInst.sceneRef.scale.set(newInst.scale.x, newInst.scale.y, newInst.scale.z);
+
 				sceneRoot.add(newInst.sceneRef);
-
-				// var boxSize = new THREE.Vector3();
-				// meshList[newInst.meshId].geometry.boundingBox.getSize(boxSize);
-				// var boundingBoxMesh = new THREE.Mesh(
-				// 	new THREE.BoxGeometry(boxSize.x, boxSize.y, boxSize.z),
-				// 	new THREE.MeshBasicMaterial({color:0x000, wireframe: true}));
-				// boundingBoxMesh.position.set(inst.xform.position.x, inst.xform.position.y, inst.xform.position.z);
-				// boundingBoxMesh.name = inst.name + "(" + newInst.meshId + ")";
-				// scene.add(boundingBoxMesh);
-
-				// console.log("Pos[" + inst.xform.position.x + ", " + inst.xform.position.y + ", " + inst.xform.position.z + "] [" + boxSize.x + ", " + boxSize.y + ", " + boxSize.z + "]");
 				
 				meshInstanceList[newInst.meshId] = newInst;
 			}
 		}
 	});
 	//////////////////////////////////////////////////////////
-	
-	// custom mesh ////////////////////////////////////////////////////////////////////////////////
-	// *** MOVE THIS TO LOADMODEL() FUNCTION ***
-	var mesh;
-	//var positions = [0.43622398376464846, -0.19999998807907105, -0.09186500310897827, 0.3182329833507538, 0.8713930249214172, -0.07845299690961838, 0.09272400289773941, 0.7124689221382141, 0.36972400546073916, -0.41748297214508059, 0.27617397904396059, -0.3247329890727997, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, -0.4547869861125946, -0.20000001788139344, -0.3599330186843872, 0.16333800554275514, -0.19999998807907105, 0.45219600200653078, 0.09272400289773941, 0.7124689221382141, 0.36972400546073916, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, 0.43622398376464846, -0.19999998807907105, -0.09186500310897827, 0.28380098938941958, -0.19999998807907105, -0.296550989151001, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, -0.3621709644794464, 0.26649799942970278, -0.07406900078058243, -0.11200699210166931, 0.5691570043563843, -0.2532989978790283, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, 0.09272400289773941, 0.7124689221382141, 0.36972400546073916, 0.3182329833507538, 0.8713930249214172, -0.07845299690961838, 0.16333800554275514, -0.19999998807907105, 0.45219600200653078, 0.43622398376464846, -0.19999998807907105, -0.09186500310897827, 0.09272400289773941, 0.7124689221382141, 0.36972400546073916, -0.33065903186798098, -0.19999998807907105, 0.29423898458480837, 0.16333800554275514, -0.19999998807907105, 0.45219600200653078, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, 0.3182329833507538, 0.8713930249214172, -0.07845299690961838, 0.43622398376464846, -0.19999998807907105, -0.09186500310897827, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, -0.4547869861125946, -0.20000001788139344, -0.3599330186843872, -0.33065903186798098, -0.19999998807907105, 0.29423898458480837, -0.41748297214508059, 0.27617397904396059, -0.3247329890727997, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, 0.3182329833507538, 0.8713930249214172, -0.07845299690961838, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, -0.11200699210166931, 0.5691570043563843, -0.2532989978790283, -0.3786419630050659, 0.5216950178146362, -0.07245299965143204, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, -0.3786419630050659, 0.5216950178146362, -0.07245299965143204, -0.33065903186798098, -0.19999998807907105, 0.29423898458480837, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, 0.28380098938941958, -0.19999998807907105, -0.296550989151001, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, -0.11200699210166931, 0.5691570043563843, -0.2532989978790283, -0.2687549889087677, 0.6452930569648743, 0.24261897802352906, -0.33065903186798098, -0.19999998807907105, 0.29423898458480837, -0.3621709644794464, 0.26649799942970278, -0.07406900078058243, -0.41748297214508059, 0.27617397904396059, -0.3247329890727997, -0.3621709644794464, 0.26649799942970278, -0.07406900078058243, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, -0.41748297214508059, 0.27617397904396059, -0.3247329890727997, -0.11200699210166931, 0.5691570043563843, -0.2532989978790283, 0.22846299409866334, 0.8555870056152344, -0.24279800057411195, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, -0.3786419630050659, 0.5216950178146362, -0.07245299965143204, -0.11200699210166931, 0.5691570043563843, -0.2532989978790283, -0.3621709644794464, 0.26649799942970278, -0.07406900078058243, -0.4547869861125946, -0.20000001788139344, -0.3599330186843872, -0.1017720028758049, 0.31874901056289675, -0.36397498846054079, 0.28380098938941958, -0.19999998807907105, -0.296550989151001, -0.3786419630050659, 0.5216950178146362, -0.07245299965143204, -0.3621709644794464, 0.26649799942970278, -0.07406900078058243, -0.33065903186798098, -0.19999998807907105, 0.29423898458480837];
-	//var indices = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62];
-	//var normals = [0.8763512969017029, 0.09058903902769089, 0.4730771481990814,0.8763512969017029, 0.09058903902769089, 0.4730771481990814,0.8763512969017029, 0.09058903902769089, 0.4730771481990814,-0.13399899005889893, 0.08349400013685227, -0.9874579310417175,-0.13399899005889893, 0.08349400013685227, -0.9874579310417175,-0.13399899005889893, 0.08349400013685227, -0.9874579310417175,-0.3407970070838928, 0.05843499302864075, 0.9383190274238586,-0.3407970070838928, 0.05843499302864075, 0.9383190274238586,-0.3407970070838928, 0.05843499302864075, 0.9383190274238586,0.7999498248100281, 0.07227098196744919, -0.595698893070221,0.7999498248100281, 0.07227098196744919, -0.595698893070221,0.7999498248100281, 0.07227098196744919, -0.595698893070221,-0.7428157329559326, 0.24501992762088777, -0.6230489015579224,-0.7428157329559326, 0.24501992762088777, -0.6230489015579224,-0.7428157329559326, 0.24501992762088777, -0.6230489015579224,-0.24943795800209046, 0.9454059600830078, 0.2097339630126953,-0.24943795800209046, 0.9454059600830078, 0.2097339630126953,-0.24943795800209046, 0.9454059600830078, 0.2097339630126953,0.888534426689148, 0.1090429276227951, 0.4456636905670166,0.888534426689148, 0.1090429276227951, 0.4456636905670166,0.888534426689148, 0.1090429276227951, 0.4456636905670166,-0.3035810887813568, 0.08021103590726853, 0.9494234323501587,-0.3035810887813568, 0.08021103590726853, 0.9494234323501587,-0.3035810887813568, 0.08021103590726853, 0.9494234323501587,0.8689038753509522, 0.10175498574972153, -0.48440900444984438,0.8689038753509522, 0.10175498574972153, -0.48440900444984438,0.8689038753509522, 0.10175498574972153, -0.48440900444984438,-0.9805144667625427, 0.06306102871894837, 0.18605008721351624,-0.9805144667625427, 0.06306102871894837, 0.18605008721351624,-0.9805144667625427, 0.06306102871894837, 0.18605008721351624,-0.3183201253414154, 0.9443383812904358, 0.08305003494024277,-0.3183201253414154, 0.9443383812904358, 0.08305003494024277,-0.3183201253414154, 0.9443383812904358, 0.08305003494024277,-0.3277939260005951, 0.9127659201622009, -0.243740975856781,-0.3277939260005951, 0.9127659201622009, -0.243740975856781,-0.3277939260005951, 0.9127659201622009, -0.243740975856781,-0.9507812261581421, 0.08777803182601929, 0.29717010259628298,-0.9507812261581421, 0.08777803182601929, 0.29717010259628298,-0.9507812261581421, 0.08777803182601929, 0.29717010259628298,0.25281408429145815, 0.062419019639492038, -0.9654993414878845,0.25281408429145815, 0.062419019639492038, -0.9654993414878845,0.25281408429145815, 0.062419019639492038, -0.9654993414878845,-0.6076409220695496, 0.7334520220756531, -0.3046649992465973,-0.6076409220695496, 0.7334520220756531, -0.3046649992465973,-0.6076409220695496, 0.7334520220756531, -0.3046649992465973,-0.97005695104599, 0.10672400146722794, 0.21817299723625184,-0.97005695104599, 0.10672400146722794, 0.21817299723625184,-0.97005695104599, 0.10672400146722794, 0.21817299723625184,-0.1253119856119156, 0.9899289011955261, 0.06586198508739472,-0.1253119856119156, 0.9899289011955261, 0.06586198508739472,-0.1253119856119156, 0.9899289011955261, 0.06586198508739472,-0.2899899482727051, 0.37694889307022097, -0.8796676993370056,-0.2899899482727051, 0.37694889307022097, -0.8796676993370056,-0.2899899482727051, 0.37694889307022097, -0.8796676993370056,-0.5573041439056397, -0.030715005472302438, -0.8297401070594788,-0.5573041439056397, -0.030715005472302438, -0.8297401070594788,-0.5573041439056397, -0.030715005472302438, -0.8297401070594788,0.08531703054904938, -0.06580502539873123, -0.9941784143447876,0.08531703054904938, -0.06580502539873123, -0.9941784143447876,0.08531703054904938, -0.06580502539873123, -0.9941784143447876,-0.9979149699211121, -0.06443200260400772, 0.003771000076085329,-0.9979149699211121, -0.06443200260400772, 0.003771000076085329,-0.9979149699211121, -0.06443200260400772, 0.003771000076085329];
-	var positions = [0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5];
-	var indices = [0, 2, 3, 0, 3, 1, 8, 4, 5, 8, 5, 9, 10, 6, 7, 10, 7, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23];
-	var normals = [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0];
-	var colors = [];
-
-	for(var i=0; i<positions.length; i++)
-	{
-		positions[i] = positions[i] * sceneScale;
-	}
-
-	var geometry = new THREE.BufferGeometry();
-	geometry.setIndex(indices);
-	geometry.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3).onUpload(disposeArray));
-	geometry.addAttribute('normal', new THREE.Float32BufferAttribute(normals, 3).onUpload(disposeArray));
-	// geometry.addAttribute('color', new THREE.Float32BufferAttribute(colors, 3).onUpload(disposeArray));
-	geometry.computeBoundingSphere();
-
-	// var customMat = new THREE.MeshPhongMaterial(
-	// {
-	// 	side: THREE.DoubleSide,
-	// 	vertexColors: THREE.VertexColors
-	// });
-	var customMat = new THREE.MeshBasicMaterial(
-		{
-			side: THREE.DoubleSide,
-			vertexColors: THREE.VertexColors,
-			wireframe: true
-		});
-
-	mesh = new THREE.Mesh(
-		geometry, 
-		new THREE.MeshBasicMaterial({color:0x000, wireframe: true}));
-	// scene.add(mesh);
-	//////////////////////////////////////////////////////////////////////////////////
-
-
-	var testCubeGeo = new THREE.BoxGeometry(15, 15, 15);
-	var lineMat = new THREE.MeshBasicMaterial({
-		wireframe: true,
-		color: 0x000
-	});
-	var testCubeMesh = new THREE.Mesh(testCubeGeo, lineMat);
-	testCubeMesh.position.set(0, 20, 0);
-	// scene.add(testCubeMesh);
-
 
     const light = new THREE.DirectionalLight(0xffffff, 5.0)
     light.position.set(10, 10, 10);
@@ -479,12 +194,35 @@ var init = function()
     container.appendChild(renderer.domElement);
 }
 
+var LoadTestGeom = function(data)
+{	
+	var positions = [0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5];
+	var indices = [0, 2, 3, 0, 3, 1, 8, 4, 5, 8, 5, 9, 10, 6, 7, 10, 7, 11, 12, 13, 14, 12, 14, 15, 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23];
+	var normals = [0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0];
+	var colors = [];
+
+	for(var i=0; i<positions.length; i++)
+	{
+		positions[i] = positions[i];
+	}
+
+	var newGeom = new THREE.BufferGeometry();
+	newGeom.setIndex(indices);
+	newGeom.addAttribute('position', new THREE.Float32BufferAttribute(positions, 3).onUpload(disposeArray));
+	newGeom.addAttribute('normal', new THREE.Float32BufferAttribute(normals, 3).onUpload(disposeArray));
+	newGeom.computeBoundingSphere();
+
+	return newGeom;
+}
+
 function disposeArray()
 {
 	this.array = null;
 }
-var loadMesh = function(data, meshOutput)
+var loadGeometry = function(data)
 {
+	var meshOutput = {};
+
 	meshOutput.name = data.name;
 	meshOutput.id = data.id;
 
@@ -492,12 +230,11 @@ var loadMesh = function(data, meshOutput)
 	meshOutput.verts = [];
 	for (var v=0; v<data.verts.length; v++)
 	{
-		meshOutput.verts.push(data.verts[v].x * sceneScale, data.verts[v].y * sceneScale, data.verts[v].z * sceneScale);
+		meshOutput.verts.push(data.verts[v].x, data.verts[v].y, data.verts[v].z);
 	}
 	
 	// Vertex Indices
-	meshOutput.indices = [];
-	meshOutput.indices.push(data.indices);
+	meshOutput.indices = data.indices;
 	
 	// Vertex Normals
 	meshOutput.vertNormals = [];
@@ -536,6 +273,8 @@ var loadMesh = function(data, meshOutput)
 
 	meshOutput.geometry.computeBoundingSphere();
 	meshOutput.geometry.computeBoundingBox();
+
+	return meshOutput;
 }
 
 var processInput = function()

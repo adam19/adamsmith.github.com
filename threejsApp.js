@@ -12,11 +12,46 @@ import { FBXLoader } from './node_modules/three/examples/jsm/loaders/FBXLoader.j
 
 var container;
 var sceneRoot;
-var camera;
 var renderer;
 var textureLoader;
 var rgbeTextureLoader;
 var fbxLoader;
+
+var cameraManager = {
+	selectedCamera: null,
+	cameraIndex: 0,
+	cameraList: [],
+	addCamera: function(newCamera)
+	{
+		if (newCamera != null)
+		{
+			this.cameraList.push(newCamera);
+			this.selectedCamera = this.cameraList[this.cameraList.length - 1];
+		}
+	},
+	selectCamera: function(camIndex)
+	{
+		if (camIndex > -1 && camIndex < this.cameraList.length)
+		{
+			this.cameraIndex = camIndex;
+			this.selectedCamera = this.cameraList[this.cameraIndex];
+		}
+	},
+	nextCamera: function()
+	{
+		this.cameraIndex++;
+		this.cameraIndex = (this.cameraIndex >= this.cameraList.length) ? 0 : this.cameraIndex;
+
+		this.selectedCamera = this.cameraList[this.cameraIndex];
+	},
+	prevCamera: function()
+	{
+		this.cameraIndex--;
+		this.cameraIndex = (this.cameraIndex < 0) ? this.cameraList.length - 1 : this.cameraIndex;
+
+		this.selectedCamera = this.cameraList[this.cameraIndex];
+	}
+};
 
 var controls = {};
 var player = {
@@ -25,7 +60,8 @@ var player = {
 	maxSpeed: 10000.0,
 	accelerationScalar: 1.005,
 	velocity: new THREE.Vector3(),
-	direction: new THREE.Vector3()
+	direction: new THREE.Vector3(),
+	camera: 0
 };
 var keyForward = '87';      // 'w'
 var keyBackward= '83';      // 's'
@@ -33,6 +69,7 @@ var keyStrafeLeft = '65';	// 'a'
 var keyStrafeRight = '68';	// 'd'
 var keyMoveUp = '81';		// 'q'
 var keyMoveDown = '69';		// 'e'
+var keyCameraToggle = '67';	// 'c'
 var moveUp = false;
 var moveDown = false;
 var moveForward = false;
@@ -59,11 +96,13 @@ var init = function()
     const near = 0.1;
     const far = 10000;
     
-    camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-	camera.position.set(10, 5, 10);
-	camera.lookAt(0, 0, 0);
+    player.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+	player.camera.position.set(10, 5, 10);
+	player.camera.lookAt(0, 0, 0);
+	cameraManager.addCamera(player.camera);
 
-	initControls(container);
+
+	initControls(container, player.camera);
 
 	initGrid(-5, 5, 1);
 	initGrid(-5, 5, 10);
@@ -169,6 +208,10 @@ var init = function()
 				
 				meshInstanceList[newInst.meshId] = newInst;
 			}
+
+			// Camera list
+			// ToDo: 
+			// cameraManager.addCamera(newCamera);
 		}
 	});
 	//////////////////////////////////////////////////////////
@@ -305,6 +348,10 @@ var processInput = function()
 	{
 		moveDown = true;
 	}
+	if (controls[keyCameraToggle])
+	{
+		cameraManager.nextCamera();
+	}
 }
 
 var handleMovement = function()
@@ -363,19 +410,20 @@ var update = function()
 
 var draw = function()
 {
-    renderer.toneMappingExposure = 2.0;
-    renderer.render(sceneRoot, camera);
+	renderer.toneMappingExposure = 2.0;
+	renderer.render(sceneRoot, cameraManager.selectedCamera);
 }
 
 var onWindowResize = function()
 {
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
+	// ToDo: fix this to update every camera in the cameraManager list
+    selectedCamera.aspect = container.clientWidth / container.clientHeight;
+    selectedCamera.updateProjectionMatrix();
 
     renderer.setSize(container.clientWidth, container.clientHeight)
 }
 
-var initControls = function(container) 
+var initControls = function(container, camera) 
 {
 	controls = new THREE.PointerLockControls(camera, container);
 

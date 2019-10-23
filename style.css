@@ -256,8 +256,17 @@ span {
 .hover-effect img {
 	display: block;
 	position: relative;
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
 	-webkit-transition: all .2s linear;
 	transition: all .2s linear;
+}
+.hover-effect:hover img {
+	-ms-transform:scale(1.1);
+	-webkit-transform:scale(1.1);
+	transform:scale(1.1);
+	-webkit-filter: grayscale(0%);
+	filter: grayscale(0%);
 }
 .hover-effect h2 {
 	text-transform:uppercase;
@@ -286,11 +295,6 @@ span {
 }
 .hover-effect a.info:hover {
 	box-shadow:0 0 5px #fff;
-}
-.hover-effect:hover img {
-	-ms-transform:scale(1.1);
-	-webkit-transform:scale(1.1);
-	transform:scale(1.1);
 }
 .hover-effect:hover h2,.hover-effect:hover a.info {
 	opacity:1;

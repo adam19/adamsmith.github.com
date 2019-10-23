@@ -4,14 +4,28 @@ body {
 	-moz-font-smoothing: antialiased;
 }
 
+h1 {
+	font-family: 'Shadows Into Light', cursive;
+}
 h2 {
 	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
 }
 h3 {
 	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
 }
 h4 {
 	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
+}
+
+p {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
 }
 
 a 

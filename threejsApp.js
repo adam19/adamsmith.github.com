@@ -155,27 +155,12 @@ var init = function()
 			var meshList = [];
 			var meshInstanceList = [];
 			var cameraList = [];
-			var lightList = [];
 			var textureList = [];
 			var otherItemsList = [];
 
 			// Meshes
-			for (var i=0; i<sceneData.meshDataList.length; i++)
-			{
-				var meshData = loadGeometry(sceneData.meshDataList[i]);
-				meshList[meshData.id] = meshData;
-
-				var newMesh = new THREE.Mesh(
-					meshData.geometry,
-					new THREE.MeshBasicMaterial(
-						{
-							color: 0x000,
-							wireframe: true
-						})
-					);
-
-				newMesh.name = "loaded " + sceneData.meshDataList[i].name;
-			}
+			loadMeshes(sceneData, meshList);
+			
 
 			for (var i=0; i<sceneData.meshInstanceList.length; i++)
 			{
@@ -234,45 +219,7 @@ var init = function()
 			// cameraManager.addCamera(newCamera);
 
 			// Lights
-			for (var i=0; i<sceneData.lightList.length; i++)
-			{
-				var inst = sceneData.lightList[i];
-
-				var xform = new THREE.Matrix4();
-				xform = xform.makeBasis(
-					inst.xform.right,
-					inst.xform.up,
-					inst.xform.forward
-				);
-				xform.setPosition(inst.xform.position.x, inst.xform.position.y, inst.xform.position.z);
-				inst.xform = xform;
-
-				var light = null;
-				switch(inst.type)
-				{
-					case "Directional":
-						light = new THREE.DirectionalLight(inst.color, inst.intensity);
-						light.name = inst.name;
-
-						var lightPos = inst.xform.getPosition();
-						light.position.set(lightPos.x, lightPos.y, lightPos.z);
-
-						var lightTarget = new THREE.Object3D();
-						var dir = new THREE.Vector3(inst.direction.x, inst.direction.y, inst.direction.z);
-						var targetPos = lightPos.add(dir);
-						lightTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
-						scene.add(lightTarget);
-						light.target = lightTarget;
-
-						console.log("Directional Light: {" + inst.color + "} @ " + inst.intensity);
-						break;
-					// case "Spot":
-					// 	light = new THREE.SpotLight(inst.color, inst.intensity, );
-					// 	break;
-				}
-
-				sceneRoot.add(light);
-			}
+			loadLights(sceneData);
 		}
 	});
 	//////////////////////////////////////////////////////////
@@ -319,6 +266,7 @@ function disposeArray()
 {
 	this.array = null;
 }
+
 var loadGeometry = function(data)
 {
 	var meshOutput = {};
@@ -375,6 +323,69 @@ var loadGeometry = function(data)
 	meshOutput.geometry.computeBoundingBox();
 
 	return meshOutput;
+}
+
+var loadMeshes = function(sceneData, meshList)
+{
+	for (var i=0; i<sceneData.meshDataList.length; i++)
+	{
+		var meshData = loadGeometry(sceneData.meshDataList[i]);
+		meshList[meshData.id] = meshData;
+
+		var newMesh = new THREE.Mesh(
+			meshData.geometry,
+			new THREE.MeshBasicMaterial(
+				{
+					color: 0x000,
+					wireframe: true
+				})
+			);
+
+		newMesh.name = "loaded " + sceneData.meshDataList[i].name;
+	}
+}
+
+var loadLights = function(sceneData)
+{
+	for (var i=0; i<sceneData.lightList.length; i++)
+	{
+		var inst = sceneData.lightList[i];
+
+		var xform = new THREE.Matrix4();
+		xform = xform.makeBasis(
+			inst.xform.right,
+			inst.xform.up,
+			inst.xform.forward
+		);
+		xform.setPosition(inst.xform.position.x, inst.xform.position.y, inst.xform.position.z);
+		inst.xform = xform;
+
+		var light = null;
+		switch(inst.type)
+		{
+			case "Directional":
+				light = new THREE.DirectionalLight(inst.color, inst.intensity);
+				light.name = inst.name;
+
+				var lightPos = inst.xform.getPosition();
+				light.position.set(lightPos.x, lightPos.y, lightPos.z);
+
+				var lightTarget = new THREE.Object3D();
+				var dir = new THREE.Vector3(inst.direction.x, inst.direction.y, inst.direction.z);
+				var targetPos = lightPos.add(dir);
+				lightTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
+				scene.add(lightTarget);
+				light.target = lightTarget;
+
+				console.log("Directional Light: {" + inst.color + "} @ " + inst.intensity);
+				break;
+			// case "Spot":
+			// 	light = new THREE.SpotLight(inst.color, inst.intensity, );
+			// 	break;
+		}
+
+		sceneRoot.add(light);
+	}
 }
 
 var processInput = function()

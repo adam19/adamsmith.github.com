@@ -63,13 +63,15 @@ var player = {
 	direction: new THREE.Vector3(),
 	camera: 0
 };
-var keyForward = '87';      // 'w'
-var keyBackward= '83';      // 's'
-var keyStrafeLeft = '65';	// 'a'
-var keyStrafeRight = '68';	// 'd'
-var keyMoveUp = '81';		// 'q'
-var keyMoveDown = '69';		// 'e'
-var keyCameraToggle = '67';	// 'c'
+var keyForward = '87';      		// 'w'
+var keyBackward= '83';      		// 's'
+var keyStrafeLeft = '65';			// 'a'
+var keyStrafeRight = '68';			// 'd'
+var keyMoveUp = '81';				// 'q'
+var keyMoveDown = '69';				// 'e'
+var keyCameraToggle = '67';			// 'c'
+var keyMaterialWireframe = '90';	// 'z'
+var keyMaterialTextured = '88';		// 'x'
 var moveUp = false;
 var moveDown = false;
 var moveForward = false;
@@ -81,6 +83,8 @@ var prevTime = 0;
 var cube;
 var cubeTexture;
 var cubeMaterial;
+
+var materialMode = 'wireframe';
 
 var init = function()
 {
@@ -104,12 +108,15 @@ var init = function()
 
 	initControls(container, player.camera);
 
-	initGrid(-5, 5, 1);
-	initGrid(-5, 5, 10);
+	var gridGroup = new THREE.Group();
+	initGrid(gridGroup, -5, 5, 1);
+	initGrid(gridGroup, -5, 5, 10);
+	gridGroup.name = "Grid";
+	sceneRoot.add(gridGroup);
     
     const geom = new THREE.BoxBufferGeometry(10, 10, 10);
     //const mat = new THREE.MeshBasicMaterial();
-    const mat = new THREE.MeshStandardMaterial({color: 0xffff00});
+    // const mat = new THREE.MeshStandardMaterial({color: 0xffff00});
 
     textureLoader = new THREE.TextureLoader();
     rgbeTextureLoader = new RGBELoader();
@@ -129,7 +136,8 @@ var init = function()
 
 	// custom mesh loader ////////////////////////////////////
 	// var scenePath = "./scene/CubeScene/ExportManifest.json";
-	var scenePath = "./scene/CaveScene/ExportManifest.json";
+	// var scenePath = "./scene/CaveScene/ExportManifest.json";
+	var scenePath = "./scene/ShaderTestScene/ExportManifest.json";
 	httpGetAsync(scenePath, function (data) {
 		if (data)
 		{
@@ -151,6 +159,7 @@ var init = function()
 			var textureList = [];
 			var otherItemsList = [];
 
+			// Meshes
 			for (var i=0; i<sceneData.meshDataList.length; i++)
 			{
 				var meshData = loadGeometry(sceneData.meshDataList[i]);
@@ -187,15 +196,25 @@ var init = function()
 				);
 				newInst.xform.setPosition(inst.xform.position.x, inst.xform.position.y, inst.xform.position.z);
 
+				// newInst.sceneRef = new THREE.Mesh(
+				// 	meshList[newInst.meshId].geometry, 
+				// 	new THREE.MeshBasicMaterial(
+				// 		{
+				// 			color: 0xff0000,
+				// 			// color: 0xffffff,
+				// 			// side: THREE.DoubleSide,
+				// 			// vertexColors: THREE.VertexColors,
+				// 			wireframe: true
+				// 		})
+				// 	);
 				newInst.sceneRef = new THREE.Mesh(
 					meshList[newInst.meshId].geometry, 
-					new THREE.MeshBasicMaterial(
+					new THREE.MeshLambertMaterial(
 						{
-							color: 0x000,
-							// color: 0xffffff,
+							color: 0xfff,
 							// side: THREE.DoubleSide,
 							// vertexColors: THREE.VertexColors,
-							wireframe: true
+							wireframe: false
 						})
 					);
 
@@ -203,6 +222,7 @@ var init = function()
 				newInst.sceneRef.position.setFromMatrixPosition(newInst.xform);
 				newInst.sceneRef.quaternion.setFromRotationMatrix(newInst.xform);
 				newInst.sceneRef.scale.set(newInst.scale.x, newInst.scale.y, newInst.scale.z);
+				newInst.sceneRef.name = newInst.name;
 
 				sceneRoot.add(newInst.sceneRef);
 				
@@ -212,13 +232,50 @@ var init = function()
 			// Camera list
 			// ToDo: 
 			// cameraManager.addCamera(newCamera);
+
+			// Lights
+			for (var i=0; i<sceneData.lightList.length; i++)
+			{
+				var inst = sceneData.lightList[i];
+
+				var xform = new THREE.Matrix4();
+				xform = xform.makeBasis(
+					inst.xform.right,
+					inst.xform.up,
+					inst.xform.forward
+				);
+				xform.setPosition(inst.xform.position.x, inst.xform.position.y, inst.xform.position.z);
+				inst.xform = xform;
+
+				var light = null;
+				switch(inst.type)
+				{
+					case "Directional":
+						light = new THREE.DirectionalLight(inst.color, inst.intensity);
+						light.name = inst.name;
+
+						var lightPos = inst.xform.getPosition();
+						light.position.set(lightPos.x, lightPos.y, lightPos.z);
+
+						var lightTarget = new THREE.Object3D();
+						var dir = new THREE.Vector3(inst.direction.x, inst.direction.y, inst.direction.z);
+						var targetPos = lightPos.add(dir);
+						lightTarget.position.set(targetPos.x, targetPos.y, targetPos.z);
+						scene.add(lightTarget);
+						light.target = lightTarget;
+
+						console.log("Directional Light: {" + inst.color + "} @ " + inst.intensity);
+						break;
+					// case "Spot":
+					// 	light = new THREE.SpotLight(inst.color, inst.intensity, );
+					// 	break;
+				}
+
+				sceneRoot.add(light);
+			}
 		}
 	});
 	//////////////////////////////////////////////////////////
-
-    const light = new THREE.DirectionalLight(0xffffff, 5.0)
-    light.position.set(10, 10, 10);
-    sceneRoot.add(light);
     
     renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setSize(container.clientWidth, container.clientHeight);
@@ -324,6 +381,7 @@ var processInput = function()
 {
 	moveUp = moveDown = moveForward = moveBackward = strafeLeft = strafeRight = false;
 
+	// Movement
     if (controls[keyBackward])
     {
 		moveForward = true;
@@ -351,6 +409,32 @@ var processInput = function()
 	if (controls[keyCameraToggle])
 	{
 		cameraManager.nextCamera();
+	}
+
+	// Material Swapping
+	if (controls[keyMaterialWireframe])
+	{
+		materialMode = 'wireframe';
+		
+		for (var i=0; i<sceneRoot.children.length; i++)
+		{
+			if (sceneRoot.children[i].material != null && sceneRoot.children[i].material.wireframe != undefined)
+			{
+				sceneRoot.children[i].material.wireframe = true;
+			}
+		}
+	}
+	if (controls[keyMaterialTextured])
+	{
+		materialMode = 'textured';
+		
+		for (var i=0; i<sceneRoot.children.length; i++)
+		{
+			if (sceneRoot.children[i].material != null && sceneRoot.children[i].material.wireframe != undefined)
+			{
+				sceneRoot.children[i].material.wireframe = false;
+			}
+		}
 	}
 }
 
@@ -454,7 +538,7 @@ var initControls = function(container, camera)
 	sceneRoot.add(controls.getObject());
 }
 
-var initGrid = function(start, stop, scale)
+var initGrid = function(group, start, stop, scale)
 {
 	var gridMaterial = new THREE.LineBasicMaterial({ color: 0x404040 });
 	var scale;
@@ -468,14 +552,14 @@ var initGrid = function(start, stop, scale)
 		lineGeom.vertices.push(new THREE.Vector3(i * scale, 0, -5 * scale));
 		lineGeom.vertices.push(new THREE.Vector3(i * scale, 0, 5 * scale));
 		line = new THREE.Line(lineGeom, gridMaterial);
-		sceneRoot.add(line);
+		group.add(line);
 		
 		// Z-Axis
 		lineGeom = new THREE.Geometry();
 		lineGeom.vertices.push(new THREE.Vector3(-5 * scale, 0, i * scale));
 		lineGeom.vertices.push(new THREE.Vector3(5 * scale, 0, i * scale));
 		line = new THREE.Line(lineGeom, gridMaterial);
-		sceneRoot.add(line);
+		group.add(line);
 	}
 
 	scale = 100;
@@ -488,14 +572,14 @@ var initGrid = function(start, stop, scale)
 		lineGeom.vertices.push(new THREE.Vector3(i * scale, 0, -5 * scale));
 		lineGeom.vertices.push(new THREE.Vector3(i * scale, 0, 5 * scale));
 		line = new THREE.Line(lineGeom, gridMaterial);
-		sceneRoot.add(line);
+		group.add(line);
 		
 		// Z-Axis
 		lineGeom = new THREE.Geometry();
 		lineGeom.vertices.push(new THREE.Vector3(-5 * scale, 0, i * scale));
 		lineGeom.vertices.push(new THREE.Vector3(5 * scale, 0, i * scale));
 		line = new THREE.Line(lineGeom, gridMaterial);
-		sceneRoot.add(line);
+		group.add(line);
 	}
 }
 

@@ -134,6 +134,21 @@ var init = function()
     cube = new THREE.Mesh(geom, cubeMaterial);
 	// scene.add(cube);
 
+	var vertexShader = "";
+	var fragmentShader = "";
+	httpGetAsync("./scene/shaders/simpleShader.vs", function(data) {
+		if (data)
+		{
+			vertexShader = data;
+		}
+	});
+	httpGetAsync("./scene/shaders/simpleShader.fs", function(data) {
+		if (data)
+		{
+			fragmentShader = data;
+		}
+	});
+
 	// custom mesh loader ////////////////////////////////////
 	// var scenePath = "./scene/CubeScene/ExportManifest.json";
 	// var scenePath = "./scene/CaveScene/ExportManifest.json";
@@ -194,13 +209,19 @@ var init = function()
 				// 	);
 				newInst.sceneRef = new THREE.Mesh(
 					meshList[newInst.meshId].geometry, 
-					new THREE.MeshLambertMaterial(
-						{
-							color: 0xfff,
-							// side: THREE.DoubleSide,
-							// vertexColors: THREE.VertexColors,
-							wireframe: false
-						})
+					// new THREE.MeshLambertMaterial(
+					// 	{
+					// 		color: 0xfff,
+					// 		// side: THREE.DoubleSide,
+					// 		// vertexColors: THREE.VertexColors,
+					// 		wireframe: false
+					// 	})
+					new THREE.ShaderMaterial({
+						uniforms: [],
+						vertexShader: vertexShader,
+						fragmentShader: fragmentShader,
+						wireframe: false
+					})
 					);
 
 				// Set transform

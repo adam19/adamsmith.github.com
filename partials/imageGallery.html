@@ -1,0 +1,25 @@
+<div class="gallery" ng-show=isGalleryOpen ng-click="hideGallery()">		
+	<div class="gallery-background"></div>
+	
+	<div class="gallery-images">
+		<div class="close-button" ng-click="closeGallery()">
+			<span class="close-button-icon glyphicon glyphicon-remove"></span>
+		</div>
+
+		<div class="gallery-image">
+			<image-item title={{currentImage.title}} url={{currentImage.url}}></image-item> 
+		</div>
+
+		<div class="gallery-button gallery-button-left" ng-click="prevImage()">
+			<div style="vertical-align: middle;">
+				<span class="glyphicon glyphicon-chevron-left"></span>
+			</div>
+		</div>
+		
+		<div class="gallery-button gallery-button-right" ng-click="nextImage()">
+			<div style="vertical-align: middle;">
+				<span class="glyphicon glyphicon-chevron-right"></span>
+			</div>
+		</div>
+	</div>
+</div>

@@ -16,12 +16,14 @@
 				{
 					"type": "video",
 					"title": "Beauty and the Beast: Perfect Match",
-					"code": "AuzVZLqdvmQ"
+					"src": "vid/beauty_and_the_beast_perfect_match_official_launch_trailer_1080p.mp4",
+					"poster": "img/posters/beauty_and_the_beast_perfect_match_official_launch_trailer.png"
 				},
 				{
 					"type": "video",
 					"title": "Disney Dream Treats",
-					"code": "_GfgACr3Rr8"
+					"src": "vid/disney_dream_treats_1080p.mp4",
+					"poster": "img/posters/disney_dream_treats.png"
 				}
 			],
 			"tags": [
@@ -43,7 +45,8 @@
 				{
 					"type": "video",
 					"title": "Raw Data Trailer",
-					"code": "IYLC812nDcI"
+					"src": "vid/raw_data_official_launch_trailer_1080p.mp4",
+					"poster": "img/posters/raw_data_official_launch_trailer.png"
 				}
 			],
 			"tags": [
@@ -64,17 +67,17 @@
 			"rightContent": [
 				{
 					"type": "image",
-					"title": "",
+					"title": "Project Component Interface",
 					"url": "../img/VAx/VAx001.png"
 				},
 				{
 					"type": "image",
-					"title": "",
+					"title": "Entity Interaction Interface",
 					"url": "../img/VAx/VAx002.png"
 				},
 				{
 					"type": "image",
-					"title": "",
+					"title": "Interaction Matrix",
 					"url": "../img/VAx/VAx003.png"
 				}
 			],
@@ -97,12 +100,15 @@
 				{
 					"type": "video",
 					"title": "XCom 2 Console Announcement",
-					"code": "4Zq_audaBSw"
+					"src": "vid/xcom2_console_announcement_trailer_1080p.mp4",
+					"poster": "img/posters/xcom2_console_announcement_trailer.png"
 				},
 				{
 					"type": "video",
 					"title": "Saturation-Fire",
-					"code": "RW8wVFR-fgE?start=285"
+					"src": "vid/xcom2_grenadier_class_skill_tree_breakdown_preview_gameplay_720p.mp4",
+					"poster": "img/posters/xcom2_grenadier_class_skill_tree_breakdown_preview_gameplay.png",
+					"startTime": "285"
 				}
 			],
 			"tags": [
@@ -120,7 +126,7 @@
 			],
 			"rightContent": [
 				{
-					"type": "video",
+					"type": "youtube",
 					"title": "Adult Swim's Virtual Brainload",
 					"code": "SmIun5fWpeg"
 				},
@@ -150,7 +156,7 @@
 			],
 			"rightContent": [
 				{
-					"type": "video",
+					"type": "youtube",
 					"title": "WEVR's theBlu",
 					"code": "hUpkVa4UkMg"
 				}
@@ -172,7 +178,8 @@
 				{
 					"type": "video",
 					"title": "Bloom Trailer",
-					"code": "U0wtKVFMelA"
+					"src": "vid/bloom_gameplay_trailer_1080p.mp4",
+					"poster": "img/posters/bloom_gameplay_trailer.png"
 				}
 			],
 			"tags": [

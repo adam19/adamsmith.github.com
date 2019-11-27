@@ -16,9 +16,19 @@
 
 		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center Modal-content scrollbar">
 			<span>
-				<project-media-container media-list=selectedProject.rightContent></project-media-container>
-
-				<!-- <image-gallery images=selectedProject.rightContent></image-gallery> -->
+				<project-media-container 
+					media-list="selectedProject.rightContent"
+					selected-image-idx="selectedItemIdx"
+					is-gallery-open="isGalleryOpen">
+				</project-media-container>
+				
+				<image-gallery 
+					media-list="selectedProject.rightContent"
+					selected-image-idx="selectedItemIdx"
+					is-gallery-open="isGalleryOpen"
+					ng-show="isGalleryOpen">
+					TEST
+				</image-gallery>
 			</span>
 		</div>
 	</div>

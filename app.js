@@ -122,8 +122,11 @@
 	{
 		return {
 			restrict: "E",
+			transclude: true,
 			scope: {
-				mediaList: "="
+				mediaList: "=",
+				isGalleryOpen: "=",
+				selectedImageIdx: "="
 			},
 			link: function(scope, element, attrs, ctrl) {
 				scope.mediaHtml = [];
@@ -166,14 +169,17 @@
 					}
 				}, true);				
 
-				scope.openGallery = function()
+				scope.openGallery = function(imgId)
 				{
-
+					scope.selectedImageIdx = imgId;
+					scope.isGalleryOpen = true;
 				}
 
 				var addImage = function(mediaData)
 				{
-					var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "' ng-click=\"openGallery()\"></image-item>\n";
+					var imgId = $.find("image-item").length - 1;
+
+					var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "' ng-click=\"openGallery(" + imgId + ")\"></image-item>\n";
 					var newScope = scope.$new();
 					var newElement = $compile(pElem)(newScope);
 					return element.append(newElement)[0];
@@ -229,6 +235,8 @@
 			link: function(scope, element, attrs)
 			{
 				scope.isHidden = true;
+				scope.isGalleryOpen = false;
+				scope.selectedImageIdx = -1;
 
 				scope.$watch('selectedProject', function(newValue, oldValue)
 				{
@@ -285,10 +293,7 @@
 			link: function(scope, element, attrs, ctrl, transclude) {
 				scope.onClicked = function()
 				{
-					console.log("projectItem " + scope.$id + " clicked!");
-
-					var projname = scope.projname;
-					scope.setProjectByName({projname: projname});
+					scope.setProjectByName({projname: scope.projname});
 				}
 			}
 		};
@@ -351,10 +356,87 @@
 			transclude: true,
 			templateUrl: "partials/imageGallery.html",
 			scope: {
-				images: '='
+				mediaList: '=',
+				selectedImageIdx: '=',
+				isGalleryOpen: '='
 			},
 			link: function(scope, element) {
 
+				scope.imageList = [];
+				scope.currentImage = null;
+
+				scope.$watch('mediaList', function(newValue, oldValue)
+				{
+					if (scope.mediaList != null && scope.mediaList.length != null)
+					{
+						scope.imageList = [];
+
+						// Generate the new DOM
+						for(var i=0; i<scope.mediaList.length; i++)
+						{
+							if (scope.mediaList[i].type == "image")
+							{
+								scope.imageList.push(scope.mediaList[i]);
+							}
+						}
+						
+						if (scope.selectedImageIdx > -1)
+						{
+							scope.isGalleryOpen = true;
+							scope.setSelectedImage();
+						}
+					}
+				}, true);
+
+				scope.$watch('selectedImageIdx', function(newValue, oldValue)
+				{
+					scope.selectedImageIdx = newValue;
+
+					if (newValue > -1)
+					{
+						scope.setSelectedImage();
+						scope.isGalleryOpen = true;
+					}
+					else
+					{
+						scope.isGalleryOpen = false;
+					}
+				}, false);
+
+				scope.setSelectedImage = function()
+				{
+					if (scope.selectedImageIdx > -1)
+					{
+						scope.currentImage = scope.imageList[scope.selectedImageIdx];
+					}
+				}
+
+				scope.nextImage = function()
+				{
+					scope.selectedImageIdx++;
+					if (scope.selectedImageIdx >= scope.imageList.length)
+					{
+						scope.selectedImageIdx = 0;
+					}
+
+					scope.currentImage = scope.imageList[scope.selectedImageIdx];
+				}
+
+				scope.prevImage = function()
+				{
+					scope.selectedImageIdx--;
+					if (scope.selectedImageIdx < 0)
+					{
+						scope.selectedImageIdx = scope.imageList.length - 1;
+					}
+
+					scope.currentImage = scope.imageList[scope.selectedImageIdx];
+				}
+
+				scope.closeGallery = function()
+				{
+					scope.isGalleryOpen = false;
+				}
 			}
 		};
 	});

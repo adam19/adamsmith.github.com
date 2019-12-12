@@ -258,6 +258,7 @@
 				scope.closeModal = function()
 				{
 					scope.isHidden = true;
+					scope.isGalleryOpen = false;
 					scope.selectedProject = null;
 
 					var videoElements;
@@ -436,6 +437,7 @@
 				scope.closeGallery = function()
 				{
 					scope.isGalleryOpen = false;
+					scope.selectedImageIdx = -1;
 				}
 			}
 		};

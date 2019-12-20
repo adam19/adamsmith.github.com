@@ -1,0 +1,55 @@
+<h2>XCom 2 (PC/XB1/PS4)</h2>
+
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-left">
+	<br>
+	<span>
+		<p>
+			I was a part of the initial development of XCom 2 for the PC, and for the development of the console versions for the Xbox One and the Playstation 4.
+			During the PC development I was responsible for several portions of the game
+			including gameplay and UI development. I implemented several weapons for the 
+			single-player campaign including the Triple-Shot and the Saturation-Fire.
+		</p> 
+		<p>
+			<b>Triple-Shot</b> is an ability for the Sniper class of soldier where they can use
+			their pistol to pop off 3 shots on an enemy with high accuracy. The <b>Saturation-Fire</b>
+			(aka Shredder-Fire) ability was one of my favorites to develop. The Grenadier class of 
+			soldier can use their chain-gun to fire a hail-storm of bullets in a cone shape damaging every 
+			enemy and all cover within it.
+		</p>
+		<p>
+			I also improved some aspects of the UI to enhance the developers workflow. Most of the
+			UI for debugging follows the typical debug text built into Unreal Engine 3. The color
+			choices started making reading increasingly difficult in certain scenarios.
+			I took it upon myself to add a drop shadow to the text by rendering black text followed
+			by the regular text offset by 1 pixel on the X and Y axis. This increased the texts 
+			visibility quite a bit.
+		</p>
+		<p>
+			During the console development I was in charge of disc installations. This was a little
+			problematic due to the games procedural nature. Current-gen consoles require an initial
+			chunk of the game to be immediately available for the player, so they can jump in and start
+			playing right away. We marked the tutorial mission and the Avenger to be loaded first, and
+			blocked the loading of any other assets until the entire game was finished downloading. This
+			same logic was applied to the disc based game also. I managed the downloads by watching 
+			internal systems made available by the OS to watch and wait until the entire game was installed.
+			Once complete all of the locks initially placed on assets were removed. 
+		</p>
+		<p>
+			I was also in charge of modifying and updating the Unreal Frontend tools. Since Unreal Engine 3
+			was created for the previous generation of consoles there were development features missing 
+			for current-gen. I added a couple of buttons to the UI, and several new RPCs to launch tools
+			made available in the console SDKs.  
+		</p>
+	</span>
+</div>
+
+<div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 text-center Modal-content">
+	<video-item 
+		title="XCom 2 Console Announcement"
+		code="4Zq_audaBSw">
+	</video-item>
+	<video-item 
+		title="Saturation-Fire"
+		code="RW8wVFR-fgE?start=285">
+	</video-item>
+</div>

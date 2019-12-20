@@ -5,25 +5,20 @@
 	<title>Adam Smith's Portfolio Website</title>
 
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" type="text/html">
-	
-	<!-- Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,500,900&display=swap" rel="stylesheet">
-
+	<link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css">
 	<link rel="stylesheet" href="style.css">
 
-	<script type="text/javascript" src="node_modules/angular/angular.js"></script>
-	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
-	<!-- <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
-	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script> -->
+	<!-- <script type="text/javascript" src="node_modules/angular/angular.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.js"></script> -->
+	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
+	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular-animate/angular-animate.min.js"></script>
 	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
 	<script type="text/javascript" src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
-	<script type="text/javascript" src="node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src='node_modules/bootstrap/dist/js/bootstrap.min.js'></script>
-	<script type="text/javascript" src='app.js'></script>
+	<script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
 </head>
 
 <body>
@@ -39,24 +34,19 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li>
 						<a href="https://bitbucket.org/adam19/">
-						<span class="fa fa-bitbucket fa-2x"></span>
+						<span class="fab fa-bitbucket fa-2x"></span>
 						</a>
 					</li>
 					<li>
 						<a href="https://github.com/adam19">
-						<span class="fa fa-github fa-2x"></span>
+						<span class="fab fa-github fa-2x"></span>
 						</a>
 					</li>
 					<li>
 						<a href="https://www.linkedin.com/in/adam19">
-						<span class="fa fa-linkedin fa-2x"></span>
+						<span class="fab fa-linkedin-in fa-2x"></span>
 						</a>
 					</li>
-					<!--<li>
-						<a href="#">
-						<span class="fa fa-envelope fa-2x"></span>
-						</a>
-					</li>-->
 				</ul>
 			</div>
 		</div>
@@ -66,7 +56,7 @@
 		<div class="row" id="intro-div">
 			<div class="col-md-2"></div>
 			<div class="col-md-8 text-center front-page">
-				<h1>Coder | Gamer | Traveler</h1>
+				<h1>Coder | Gamer | Traveller</h1>
 				
 				</br>
 				<h4>
@@ -79,7 +69,7 @@
 				
 				<!-- Arrow -->
 				<div class="col-md-12 text-center" id="continue-arrow">
-					<span class="fa fa-arrow-down fa-2x" style="color: #fff; min-height: 100px;"></span>
+					<span class="fa fa-arrow-down fa-2x" style="color: #fff;"></span>
 				</div>
 			</div>
 			<div class="col-md-2"></div>
@@ -87,15 +77,13 @@
 
 
 		<!-- PROJECTS SECTION -->
-		<div ng-controller="ProjectController">
-			<!-- Modal View for projects -->
+		<div ng-controller="ProjectController as pc">
 			<div class="row">
 				<div class="col-md-12 text-center">
-					<project-modal selected-project="currentProject" ng-hide="isHidden"></project-modal>
+					<project-modal selectedproject="{{currentProject}}"></project-modal>
 				</div>
 			</div>
 
-			<!-- Project Header -->
 			<a name="Projects"></a>
 			<div class="row">
 				<div class="col-md-12 text-center">
@@ -103,14 +91,12 @@
 				</div>
 			</div>
 			
-			<!-- List of projects -->
 			<div class="row">
 				<div class="col-md-12">
 					<project-item 
 						ng-repeat="proj in projectList"
 						bgimage={{proj.img}}
-						projname={{proj.title}}
-						set-project-by-name="setProjectByName(projname)">
+						projname={{proj.title}}>
 					</project-item>
 				</div>
 			</div>

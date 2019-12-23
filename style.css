@@ -98,6 +98,8 @@ span {
 	z-index: 10;
 }
 
+/* ----------------------------- MODAL WINDOWS ----------------------------- */
+
 .Modal-backdrop
 {
 	position: fixed;
@@ -136,6 +138,21 @@ span {
 	overflow-y: scroll;
 }
 
+.close-button
+{
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	width: 20px;
+	height: 20px;
+}
+.close-button-icon
+{
+	font-size: 20px;
+}
+
+/* --------------------------- GALLERY ----------------------------- */
+
 .gallery
 {
 	position: fixed;
@@ -157,9 +174,19 @@ span {
 	z-index: 21;
 	opacity: 0.75;
 }
-.gallery-images
+.gallery-title
 {
 	position: fixed;
+	top: 5px;
+	left: 30px;
+	right: 30px;
+	height: 50px;
+	z-index: 21;
+	vertical-align: auto;
+}
+.gallery-frame
+{
+	position: absolute;
 	top: 50px;
 	left: 30px;
 	bottom: 50px;
@@ -171,45 +198,64 @@ span {
 }
 .gallery-button
 {
-	width: 30%;
-	height: 100%;
-	font-size: 30px;
-	padding: 25% 0;
 	position: absolute;
+	width: 30%;
+	top: 0;
+	bottom: 0;
+	font-size: 30px;
+
+	display: flex; 
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-items: center;
+	align-content: stretch;
 }
 .gallery-button-left
 {
-	left: 0px;
-	padding-left: 10px;
-	text-align: left;
+	left: 10px;
 }
 .gallery-button-right
 {
-	right: 0px;
-	padding-right: 10px;
-	text-align: right;
+	right: 10px;
+}
+.gallery-button-icon
+{
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+.gallery-button-icon-left
+{
+	justify-content:flex-start;
+}
+.gallery-button-icon-right
+{
+	justify-content:flex-end;
+}
+.gallery-image-frame
+{
+	position: absolute;
+	left: 50px;
+	right: 50px;
+	top: 5px;
+	bottom: 5px;
+	
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: center;
+	align-items: center;
 }
 .gallery-image
 {
-	max-width: 100%;
-	max-height: 100%;
-	position: absolute;
-	margin-left: 50px;
-	margin-right: 50px;
+	object-fit: contain;
+	flex: 1;
+	overflow: hidden;
+	align-self: stretch;
 }
 
-.close-button
-{
-	position: fixed;
-	top: 10px;
-	right: 10px;
-	width: 20px;
-	height: 20px;
-}
-.close-button-icon
-{
-	font-size: 20px;
-}
+/* --------------------------- MEDIA CONTAINERS ----------------------------- */
 
 .video-container
 {
@@ -242,6 +288,8 @@ span {
 	height: 100%;
 	margin-bottom: 5px;
 }
+
+/* --------------------------- HOVER EFFECTS ----------------------------- */
 
 .hover-effect {
 	width: 100%;
@@ -332,7 +380,7 @@ span {
 	transition: all linear 0.5s;
 }
 
-/* Custom scrollbar styles */
+/* --------------------------- CUSTOM SCROLL BAR STYLES ----------------------------- */
 ::-webkit-scrollbar {
 	width: 5px;
 }

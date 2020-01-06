@@ -52,7 +52,7 @@ span {
 	background-color: rgba(0, 10, 32, 0.5);
 }
 .cover-background {
-	background-color: dodgerblue;
+	background-color: rgba(10, 10, 20, 1.0);
 	position: fixed;
 	left: 0px;
 	top: 0px;
@@ -307,7 +307,7 @@ span {
 	top: 0;
 	left: 0;
 	opacity: 0;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.0);
 	-webkit-transition: all .2s ease-in-out;
 	transition: all .2s ease-in-out;
 }

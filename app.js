@@ -177,7 +177,8 @@
 
 				var addImage = function(mediaData)
 				{
-					var imgId = $.find("image-item").length - 1;
+					// var imgId = $.find("image-item").length - 1;
+					var imgId = $.find("image-item").length;
 
 					var pElem = "<image-item title='" + mediaData.title + "' url='" + mediaData.url + "' ng-click=\"openGallery(" + imgId + ")\"></image-item>\n";
 					var newScope = scope.$new();
@@ -196,6 +197,12 @@
 						videoTag += "poster='" + mediaData.poster + "'";
 					}
 					videoTag += ">";
+
+					// Set start time
+					if (mediaData.startTime != null && mediaData.startTime > 0)
+					{
+						
+					}
 
 					// Add video source
 					videoTag += "<source src='" + mediaData.src + "' type=\"video/mp4\"></video>";

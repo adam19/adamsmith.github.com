@@ -137,18 +137,33 @@
 			var viewHeight = $(window).height();
 			var viewWidth = $(window).width();
 	
+			// Set the height of the intro-div to the height of the viewport.
+			// This keeps the intro paragraph the only viewable item when loaded
 			$("#intro-div").height(viewHeight);
 
-			var arrowPos = viewHeight - $("#continue-arrow").innerHeight() - 5;
-			var arrowRotation = 0;
-			$("#continue-arrow").offset({top: arrowPos});
+			// Determine whether or not the window is too short to display the arrow
+			var introDivRect = $("#intro-div")[0].getBoundingClientRect();
+			var continueArrowElem = $("#continue-arrow")[0];
+			var continueArrowRect = continueArrowElem.getBoundingClientRect();
 
-			// Continuously rotate the 'continue' arrow
-			setInterval(function() {
-				var val = "rotateY(" + arrowRotation + "deg)";
-				$("#continue-arrow").css("transform", val);
-				arrowRotation = (arrowRotation > 360) ? arrowRotation - 360 : arrowRotation + 1.25;
-			}, 15);
+			if (continueArrowRect.top < introDivRect.bottom)
+			{
+				var arrowPos = viewHeight - (continueArrowRect.bottom - continueArrowRect.top);
+				$("#continue-arrow").offset({top: arrowPos});
+				
+				// Continuously rotate the 'continue' arrow
+				var arrowRotation = 0;
+				setInterval(function() {
+					var val = "rotateY(" + arrowRotation + "deg)";
+					$("#continue-arrow").css("transform", val);
+					arrowRotation = (arrowRotation > 360) ? arrowRotation - 360 : arrowRotation + 1.25;
+				}, 15);
+			}
+			else
+			{
+				// Hide the arrow since the window height is very small
+				continueArrowElem.style.display = "none";
+			}
 		})();
 		</script>
 </body>
